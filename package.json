@@ -5,6 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "serve",
+    "prebuild": "yarn install --production",
     "build": "mkdir -p dist && cp index.html dist/index.html",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist"
