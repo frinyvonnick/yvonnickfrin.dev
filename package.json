@@ -6,7 +6,7 @@
   "scripts": {
     "start": "serve",
     "prebuild": "yarn install --production",
-    "build": "mkdir -p dist && cp index.html dist/index.html",
+    "build": "mkdir -p dist && cp src/* dist/ && echo 'yvonnickfrin.dev' > ./dist/CNAME",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist"
   },
