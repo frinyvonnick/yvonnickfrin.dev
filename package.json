@@ -1,27 +1,16 @@
 {
-  "name": "yvonnickfrin.dev",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.html",
+  "name": "gatsby-starter-blog-theme",
+  "private": true,
+  "version": "0.0.1",
   "scripts": {
-    "start": "serve",
-    "prebuild": "yarn install --production",
-    "build": "mkdir -p dist && cp src/* dist/ && echo 'yvonnickfrin.dev' > ./dist/CNAME",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist"
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/frinyvonnick/yvonnickfrin.dev.git"
-  },
-  "author": "Yvonnick FRIN",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/frinyvonnick/yvonnickfrin.dev/issues"
-  },
-  "homepage": "https://github.com/frinyvonnick/yvonnickfrin.dev#readme",
-  "devDependencies": {
-    "gh-pages": "^2.0.1",
-    "serve": "^10.1.2"
+  "dependencies": {
+    "gatsby": "^2.13.73",
+    "gatsby-theme-blog": "^1.0.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   }
 }
