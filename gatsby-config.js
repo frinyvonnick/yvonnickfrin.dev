@@ -4,8 +4,10 @@ module.exports = {
       resolve: `gatsby-theme-blog`,
       options: {},
     },
+    'gatsby-plugin-sitemap',
   ],
   siteMetadata: {
+    siteUrl: 'https://yvonnickfrin.dev',
     title: `Yvonnick Frin`,
     author: `Yvonnick Frin`,
     description: `Yvonnick Frin's blog`,
