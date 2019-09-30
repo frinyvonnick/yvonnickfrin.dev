@@ -1,0 +1,34 @@
+:root {
+  --container-width: 672px
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  transition: all ease .1s;
+}
+
+.twitter:hover {
+  fill: #1da1f2;
+}
+
+.twitch:hover {
+  fill: #6441A4;
+}
+
+.github:hover {
+  transform: rotateZ(45deg);
+}
+
+.icons a {
+  margin-right: 10px;
+}
+
+.icons a:last-child {
+  margin: 0;
+}
+
+.icons {
+  position: absolute;
+  right: calc((100vw - var(--container-width)) / 2)
+}
