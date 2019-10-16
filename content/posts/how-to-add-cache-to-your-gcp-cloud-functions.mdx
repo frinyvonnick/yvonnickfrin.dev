@@ -1,0 +1,151 @@
+---
+title: How to add cache to your GCP Cloud Functions?
+date: 2019-10-16
+---
+
+As you might be aware, this is Hacktoberfest month. I wanted to get statistics about my colleagues participation to the event and add it to our [website](https://oss.zenika.com). To achieve it I needed to use GitHub API so I choosed to store my query in a Google Cloud Function. It was the occasion to try this service as well.
+
+While developping, I came across an issue. The Github API is quite long to respond (around 2 seconds, sometimes even longer). I had a query lasting more than 10 seconds. Nobody likes to wait for 10 seconds to browse a website. So I decided to add cache to my Cloud Function.
+
+## How does a GCP Cloud Function works? 
+
+While browsing the web about caching data with Cloud Functions, I came across this [documentation](https://cloud.google.com/functions/docs/bestpractices/tips). Here is a quick summary:
+
+A Cloud Function isn't created from scratch at each invocation. The execution environnement is preserved between invocations but it is not guaranted. You can use global variable to store results of heavy computations.
+
+Sounds to be what we are looking for!
+
+## Let's practice!
+
+The data fetching isn't interesting for what we want to demonstrate. Let say, it is done by the function `fetchGitHubStats` which returns a `Promise`. Our Cloud Function fetches the statistics then return the result.
+
+```js
+function fetchGitHubStats() { /* ... */ }
+
+exports.hacktoberfest = async (req, res) => {
+  // Fetch statistics from GitHub
+  const data = await fetchGitHubStats()
+
+  res.status(200).send(data);
+};
+
+```
+
+First of all, we initialize a global variable to cache data. It has two properties:
+
+- Data to store fresh statistics from GitHub API
+- A TTL
+
+What is a **TTL**? 
+
+**TTL** is a acronym for *Time To Live*. It is a timestamp that determines how long a data is valid.
+
+We initialize the values with and empty array for the data and the current date for the TTL.
+
+```js
+function fetchGitHubStats() { /* ... */ }
+
+// We declare a global variable to store cached data
+const cache = {
+  data: [],
+  ttl: new Date(),
+}
+
+exports.hacktoberfest = async (req, res) => {
+  // ... 
+};
+
+```
+
+Each time we fetch new statistics we store the data in our global variable. We also generate a TTL of one hour we store alongside the data.
+
+```js
+// ...
+
+exports.hacktoberfest = async (req, res) => {
+  // Fetch statistics from GitHub
+  const data = await fetchGitHubStats()
+
+  // Store fresh data in cache
+  cache.data = data
+  // Store a TTL for the data
+  const dateInOneHour = new Date()
+  ttl.setHours(ttl.getHours() + 1);
+  cache.ttl = dateInOneHour 
+
+  res.status(200).send(data);
+};
+
+```
+
+Finally, we check if the TTL of the cached data is still valid. If so, we return the data stored in cache.
+
+```js
+// ...
+
+exports.hacktoberfest = async (req, res) => {
+  // We check if our data was fetched more than an hour ago. It not we return the cached data
+  if (cache.data.length > 0 && cache.ttl > new Date()) {
+    return res.status(200).send(cache.data);
+  }
+
+  // ...
+};
+
+```
+
+Here is the final result:
+
+```js
+function fetchGitHubStats() { /* ... */ }
+
+// We declare a global variable to store cached data
+const cache = {
+  data: [],
+  ttl: new Date(),
+}
+
+exports.hacktoberfest = async (req, res) => {
+  // We check if our data was fetched more than an hour ago. It not we return the cached data
+  if (cache.data.length > 0 && cache.ttl > new Date()) {
+    return res.status(200).send(cache.data);
+  }
+
+  // Fetch statistics from GitHub
+  const data = await fetchGitHubStats()
+
+  // Store fresh data in cache
+  cache.data = data
+  // Store a TTL for the data
+  const dateInOneHour = new Date()
+  ttl.setHours(ttl.getHours() + 1);
+  cache.ttl = dateInOneHour 
+
+  res.status(200).send(data);
+};
+
+```
+
+## Results
+
+Cloud Function comes with nice graphs to visualize useful statistics about you function's life. Here is a first graph that shows us our function's invocations.
+
+![Cloud Function calls graph](/images/calls.png)
+
+A second graph displays the execution itme of our function. We clearly see our function is longer to execute each time it fetches fresh data.
+
+![Cloud Function execution time graph](/images/execution_time.png)
+
+It works 🎉
+
+## What we have learned
+
+It is time to check what we have learned:
+
+- Google Cloud Functions reuse execution environnement between invocation (not guaranted).
+- You can use global variables to avoid heavy computation at each call
+- A simple global variable to store data with a TTL enables a powerful optimization
+
+Hope it will help you optimize your Cloud Functions.
+
+Feedback is appreciated 🙏 Please tweet me if you have any questions [@YvonnickFrin](https://twitter.com/YvonnickFrin)!
