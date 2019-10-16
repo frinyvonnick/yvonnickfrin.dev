@@ -3,21 +3,21 @@ title: How to add cache to your GCP Cloud Functions?
 date: 2019-10-16
 ---
 
-As I am certain you are aware, this is the month of Hacktoberfest. I wanted to display statistics about my colleagues participation to the event and display it to our [website](https://oss.zenika.com). To achieve it I needed to use GitHub API I choosed to store my query in a Google Cloud Function. It was the occasion to test this service aswell.
+As you might be aware, this is Hacktoberfest month. I wanted to get statistics about my colleagues participation to the event and add it to our [website](https://oss.zenika.com). To achieve it I needed to use GitHub API so I choosed to store my query in a Google Cloud Function. It was the occasion to try this service as well.
 
-While developping, I came across an issue. The Github API is quite long to respond nearly 2 seconds. Sometimes it takes even longer, I had a query lasting more than 10 seconds. Nobody want to wait for 10 seconds to browse a website. So I decided to add cache to my Cloud Function.
+While developping, I came across an issue. The Github API is quite long to respond (around 2 seconds, sometimes even longer). I had a query lasting more than 10 seconds. Nobody likes to wait for 10 seconds to browse a website. So I decided to add cache to my Cloud Function.
 
 ## How does a GCP Cloud Function works? 
 
-While searching information about caching data I came across this [documentation](https://cloud.google.com/functions/docs/bestpractices/tips). Here is a quick summary:
+While browsing the web about caching data with Cloud Functions, I came across this [documentation](https://cloud.google.com/functions/docs/bestpractices/tips). Here is a quick summary:
 
-A Cloud Function isn't receated from scratch at each invocation. The execution environnement is preserved between invocations but it is not guaranted. You can use global variable to store results of heavy computations.
+A Cloud Function isn't created from scratch at each invocation. The execution environnement is preserved between invocations but it is not guaranted. You can use global variable to store results of heavy computations.
 
 Sounds to be what we are looking for!
 
 ## Let's practice!
 
-The data fetching isn't interesting for what we want to demonstrate. Let's say, it is done by the function `fetchGitHubStats` which returns a `Promise`. Our Cloud Function fetches the statistics then return the result.
+The data fetching isn't interesting for what we want to demonstrate. Let say, it is done by the function `fetchGitHubStats` which returns a `Promise`. Our Cloud Function fetches the statistics then return the result.
 
 ```js
 function fetchGitHubStats() { /* ... */ }
@@ -31,7 +31,7 @@ exports.hacktoberfest = async (req, res) => {
 
 ```
 
-First of all, we initialize a global variable to stored the cached data. It has two properties:
+First of all, we initialize a global variable to cache data. It has two properties:
 
 - Data to store fresh statistics from GitHub API
 - A TTL
@@ -57,7 +57,7 @@ exports.hacktoberfest = async (req, res) => {
 
 ```
 
-Each time we fetch for new statistics we store the data in our global variable. We also generate a TTL of one hour we store alongside the data.
+Each time we fetch new statistics we store the data in our global variable. We also generate a TTL of one hour we store alongside the data.
 
 ```js
 // ...
@@ -78,7 +78,7 @@ exports.hacktoberfest = async (req, res) => {
 
 ```
 
-Finally, at the beginning of our Cloud Function's handler, we check if the TTL of the cached data is still valid. If so, we return the data stored in cache.
+Finally, we check if the TTL of the cached data is still valid. If so, we return the data stored in cache.
 
 ```js
 // ...
@@ -138,14 +138,14 @@ A second graph displays the execution itme of our function. We clearly see our f
 
 It works 🎉
 
-## What we learned
+## What we have learned
 
-It is time to check what we learned:
+It is time to check what we have learned:
 
 - Google Cloud Functions reuse execution environnement between invocation (not guaranted).
-- You can use global variables to do heavy computations
+- You can use global variables to avoid heavy computation at each call
 - A simple global variable to store data with a TTL enables a powerful optimization
 
-Hope it will you optimize your Cloud Functions.
+Hope it will help you optimize your Cloud Functions.
 
 Feedback is appreciated 🙏 Please tweet me if you have any questions [@YvonnickFrin](https://twitter.com/YvonnickFrin)!
