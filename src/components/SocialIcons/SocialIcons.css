@@ -5,6 +5,7 @@
 .icon {
   width: 32px;
   height: 32px;
+  fill: currentColor;
   transition: all ease .1s;
 }
 
@@ -22,6 +23,7 @@
 
 .icons a {
   margin-right: 10px;
+  color: currentColor;
 }
 
 .icons a:last-child {
