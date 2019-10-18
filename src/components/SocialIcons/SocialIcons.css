@@ -32,3 +32,9 @@
   position: absolute;
   right: calc((100vw - var(--container-width)) / 2)
 }
+
+@media screen and (max-width: 760px) {
+  .icons {
+    right: 28px;
+  }
+}
