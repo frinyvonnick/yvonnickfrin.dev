@@ -11,7 +11,7 @@ I would like to share with you a few libraries I used on this project and while 
 
 [🔗 repository](https://github.com/yargs/yargs)
 
-It is a library that helps you defining you tool's interface. It also parse arguments for you. The icing on the cake is that yargs generate automatically an help menu.
+It is a library that helps you defining your tool's interface. It also parses arguments for you. The icing on the cake is that yargs generates automatically an help menu.
 
 Here is a simple example that displays a message "Hello [something]" a certain amount of times.
 
@@ -20,7 +20,7 @@ require('yargs')
   .command('$0 [name]', 'say hello', (yargs) => {
     yargs
       .positional('name', {
-        describe: 'hello\s target',
+        describe: 'hello\'s target',
         default: 'world'
       })
       .option('times', {
@@ -132,7 +132,7 @@ Result:
 
 [🔗 repository](https://github.com/visionmedia/node-progress)
 
-Another common use case is dealing with asynchronous operations. It is nice to give user a percentage of completion when your cli is doing a heavy computation. Progress is highly customizable ascii progress bar. It comes with a bunch of options and standard information (percentage, total, estimated completion, ...) to display on the progress bar. You can also add your own information.
+Another common use case is dealing with asynchronous operations. It is nice to give user a percentage of completion when your cli is doing a heavy computation. Progress is an highly customizable ascii progress bar. It comes with a bunch of options and standard information (percentage, total, estimated completion, ...) to display on the progress bar. You can also add your own information.
 
 ```js
 const ProgressBar = require('progress')
@@ -163,7 +163,7 @@ Result:
 
 [🔗 repository](https://github.com/yeoman/configstore)
 
-Earlier we saw Prompts to ask user information. It is also nice to store its answer to avoid asking it again and again. Configstore is library that persists config for you. It stores it in a json file on user's disk. It handles well the dot notation!
+Earlier we saw Prompts to ask user information. It is also nice to store its answer to avoid asking it again and again. Configstore is a library that persists data for you. It stores it in a json file on the user's disk. It handles well the dot notation!
 
 ```js
 const Configstore = require('configstore')
@@ -190,7 +190,7 @@ Result:
 
 [🔗 repository](https://github.com/tabrindle/envinfo)
 
-As frontend developer I use user-agent to get information about my user device. It helps a lot to reproduce bugs for example. As cli developer you don't have access to this kind of information. envinfo is a library thats generate reports that users can provide when opening issues on your project.
+As frontend developer I use user-agent to get information about my user device. It helps a lot to reproduce bugs for example. As cli developer you don't have access to this kind of information. envinfo is a library that generates reports that users can provide when opening issues on your project.
 
 ```js
 (async () => {
@@ -214,7 +214,7 @@ Result:
 
 ![envinfo demo](/images/envinfo.gif)
 
-Alternatives exist for these libraries but I used these ones and I enjoy working with them. In my opinion, they covers the majority of problematics you will encounter while coding cli tools.
+Alternatives exist for these libraries but I used these ones and I enjoy working with them. In my opinion, they covers the majority of problems you might encounter while coding cli tools.
 
 Hope it will help 🙌 Happy cli coding!
 
