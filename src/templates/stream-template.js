@@ -63,7 +63,7 @@ export default function Template({
           },
           {
             name: "twitter:image",
-            content: `https://yvonnickfrin.dev/${frontmatter.path}.jpg`,
+            content: `https://yvonnickfrin.dev${frontmatter.path}.jpg`,
           }
         ]}
       />
