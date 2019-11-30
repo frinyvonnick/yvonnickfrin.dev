@@ -51,7 +51,7 @@ export default function Template({
           },
           {
             name: "twitter:creator",
-            content: 'Yvonnick FRIN'
+            content: '@YvonnickFrin'
           },
           {
             name: "twitter:title",
