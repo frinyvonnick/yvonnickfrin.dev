@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from "react-helmet"
 import { graphql } from 'gatsby'
 
 import { Stream } from '../components/Stream'
@@ -21,6 +22,9 @@ export default function({ data, ...props }) {
   const [nextStream, ...futureStreams] = streams.filter(s => compareDates(new Date(s.frontmatter.date), new Date()) >= 0)
   return (
     <Layout {...props} title="Yvonnick Frin">
+      <Helmet>
+        <html lang="fr" />
+      </Helmet>
       <div className="streams">
         <h2>Prochain stream</h2>
         <Stream

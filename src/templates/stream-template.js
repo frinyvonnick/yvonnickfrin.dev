@@ -1,4 +1,5 @@
 import React from "react"
+import { Helmet } from "react-helmet"
 import { graphql } from "gatsby"
 
 import { Stream } from '../components/Stream'
@@ -13,6 +14,9 @@ export default function Template({
   const { frontmatter, html } = markdownRemark
   return (
     <Layout {...props} title="Yvonnick Frin">
+      <Helmet>
+        <html lang="fr" />
+      </Helmet>
       <Stream
         {...frontmatter}
         description={html}
