@@ -57,10 +57,15 @@ export function Stream (props) {
   }
   return (
     <article className="stream">
-      <h3><Link to={path}>{title}</Link></h3>
-      <small><FrenchDate date={date} /> ({startHour} - {endHour})</small>
-      <div dangerouslySetInnerHTML={{ __html: description }} />
-      <AddToCalendar event={event} className="add-calendar-container" />
+      <div>
+        <img src={`${path}.jpg`} alt="Social media card for the stream" />
+      </div>
+      <div>
+        <h3><Link to={path}>{title}</Link></h3>
+        <small><FrenchDate date={date} /> ({startHour} - {endHour})</small>
+        <div dangerouslySetInnerHTML={{ __html: description }} />
+        <AddToCalendar event={event} className="add-calendar-container" />
+      </div>
     </article>
   )
 }

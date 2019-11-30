@@ -8,15 +8,19 @@
     "build": "gatsby build"
   },
   "dependencies": {
+    "date-fns": "^2.8.1",
     "gatsby": "^2.13.73",
     "gatsby-plugin-google-analytics": "^2.1.19",
     "gatsby-plugin-sitemap": "^2.2.9",
     "gatsby-source-filesystem": "^2.1.39",
     "gatsby-theme-blog": "^1.0.2",
     "gatsby-transformer-remark": "^2.6.38",
+    "handlebars": "^4.5.3",
+    "puppeteer": "^2.0.0",
     "react": "^16.9.0",
     "react-add-to-calendar-hoc": "^1.0.9",
     "react-dom": "^16.9.0",
-    "react-github-btn": "^1.1.0"
+    "react-github-btn": "^1.1.0",
+    "request": "^2.88.0"
   }
 }
