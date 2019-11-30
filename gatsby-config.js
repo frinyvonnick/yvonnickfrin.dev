@@ -1,6 +1,14 @@
 module.exports = {
   plugins: [
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `streams`,
+        path: `${__dirname}/content/streams`,
+      },
+    },
+    `gatsby-transformer-remark`,
+    {
       resolve: `gatsby-theme-blog`,
       options: {},
     },
