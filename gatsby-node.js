@@ -49,6 +49,9 @@ exports.onCreateNode = async ({ node, actions }) => {
   const alreadyExists = await existsAsync(path.join(__dirname, '/public/streams'))
   if (!alreadyExists) {
     await mkdirAsync(path.join(__dirname, '/public/streams'))
+      .catch(() => {
+        // ignore errors
+      })
   }
 
   if (node.internal.type === 'MarkdownRemark') {
