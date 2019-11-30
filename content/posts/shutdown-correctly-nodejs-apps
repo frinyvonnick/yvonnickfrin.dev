@@ -1,0 +1,37 @@
+---
+title: Shutdown correctly Node.js apps
+date: 2019-11-27
+---
+
+It is important to shutdown correctly your apps to handle well processing requests and prevent your server to accept new ones.
+
+```js
+const http = require('http');
+
+const server = http.createServer(function (req, res) {
+  setTimeout(function () {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello World\n');
+  }, 4000);
+}).listen(9090, function (err) {
+  console.log('listening http://localhost:9090/');
+  console.log('pid is ' + process.pid);
+});
+```
+
+![Error when killing server](/images/kill-server.gif)
+
+```js
+// ...
+
+process.on('SIGINT', (code) => {
+  console.log('Close my server properly')
+  server.close(function () {
+    process.exit(0);
+  });
+});
+```
+
+![Handle well killing server](/images/kill-server-properly.gif)
+
+You can read more in [Nairi Harutyunyan](https://twitter.com/nairihar)'s [nice article](https://medium.com/hackernoon/graceful-shutdown-in-nodejs-2f8f59d1c357). It explain in details how to shutdown properly a server with a database.
