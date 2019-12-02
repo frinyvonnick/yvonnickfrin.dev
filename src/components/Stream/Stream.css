@@ -57,4 +57,13 @@
   text-decoration: underline;
 }
 
+@media screen and (max-width: 768px) {
+  .stream {
+    flex-direction: column;
+  }
+
+  .stream > *:first-child {
+    margin-right: 0;
+  }
+}
 

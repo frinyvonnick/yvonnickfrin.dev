@@ -1,0 +1,28 @@
+nav {
+  display: flex;
+}
+
+nav > * {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  text-decoration: none;
+  color: currentColor;
+}
+
+nav .selected {
+  border-bottom: 3px solid currentColor;
+}
+
+@media screen and (max-width: 768px) {
+  nav {
+    flex-direction: column;
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  nav > *:not(:last-child) {
+    margin-right: 20px;
+  }
+}
