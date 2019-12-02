@@ -17,6 +17,11 @@ nav .selected {
 @media screen and (max-width: 768px) {
   nav {
     flex-direction: column;
+    padding: 0 28px;
+  }
+
+  nav > * {
+    width: fit-content;
   }
 }
 
