@@ -43,7 +43,7 @@ export default function Template({
           },
           {
             property: "og:url",
-            content: 'https://yvonnickfrin.dev' 
+            content: `https://yvonnickfrin.dev${frontmatter.path}` 
           },
           {
             property: "og:site_name",
