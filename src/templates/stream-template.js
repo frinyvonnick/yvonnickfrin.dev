@@ -6,6 +6,10 @@ import { Stream } from '../components/Stream'
 
 import Layout from '../gatsby-theme-blog/components/layout'
 
+function truncate(str, n){
+  return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;
+}
+
 export default function Template({
   data,
   ...props
@@ -23,11 +27,11 @@ export default function Template({
         meta={[
           {
             property: "og:title",
-            content: frontmatter.title
+            content: truncate(frontmatter.title, 70),
           },
           {
             property: "og:description",
-            content: frontmatter.title
+            content: truncate(frontmatter.title, 200),
           },
           {
             property: "og:image",
@@ -55,11 +59,11 @@ export default function Template({
           },
           {
             name: "twitter:title",
-            content: frontmatter.title
+            content: truncate(frontmatter.title, 70),
           },
           {
             name: "twitter:description",
-            content: frontmatter.title
+            content: truncate(frontmatter.title, 200),
           },
           {
             name: "twitter:image",
