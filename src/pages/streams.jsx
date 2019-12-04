@@ -18,6 +18,7 @@ function compareDates(da, db) {
 export default function({ data, ...props }) {
   const streams = data.allMarkdownRemark.edges.map(({ node }) => node)
 
+  console.log('streams', streams)
   const pastStreams = streams.filter(s => compareDates(new Date(s.frontmatter.date), new Date()) < 0)
   const [nextStream, ...futureStreams] = streams.filter(s => compareDates(new Date(s.frontmatter.date), new Date()) >= 0)
   return (
@@ -27,20 +28,28 @@ export default function({ data, ...props }) {
       </Helmet>
       <div className="streams">
         <h2>Prochain stream</h2>
-        <Stream
-          {...nextStream.frontmatter}
-          description={nextStream.html}
-        /> 
+        {nextStream ? (
+          <Stream
+            {...nextStream.frontmatter}
+            description={nextStream.html}
+            calendar
+          /> 
+        ) : (
+          <p>Aucun stream prévu pour le moment</p>
+        )}
       </div>
       <div className="streams">
         <h2>Streams à venir</h2>
-        {futureStreams.map(stream => (
+        {futureStreams.length ? futureStreams.map(stream => (
           <Stream
             key={stream.frontmatter.title}
             {...stream.frontmatter}
             description={stream.html}
+            calendar
           /> 
-        ))}        
+        )) : (
+          <p>Aucun stream prévu pour le moment</p>
+        )}        
       </div>
       <div className="streams">
         <h2>Précédents streams</h2>

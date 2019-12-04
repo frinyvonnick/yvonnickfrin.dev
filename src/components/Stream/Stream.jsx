@@ -46,6 +46,7 @@ export function Stream (props) {
     duration,
     description,
     path,
+    calendar = false,
   } = props
   const event = {
     title,
@@ -64,7 +65,7 @@ export function Stream (props) {
         <h3><Link to={path}>{title}</Link></h3>
         <small><FrenchDate date={date} /> ({startHour} - {endHour})</small>
         <div dangerouslySetInnerHTML={{ __html: description }} />
-        <AddToCalendar event={event} className="add-calendar-container" />
+        {calendar && <AddToCalendar event={event} className="add-calendar-container" />}
       </div>
     </article>
   )

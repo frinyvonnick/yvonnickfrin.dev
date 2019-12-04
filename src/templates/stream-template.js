@@ -10,13 +10,22 @@ function truncate(str, n){
   return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;
 }
 
+function compareDates(da, db) {
+  da.setHours(0, 0, 0, 0)
+  db.setHours(0, 0, 0, 0)
+
+  return da - db
+}
+
 export default function Template({
   data,
   ...props
 }) {
-  console.log(data, props)
   const { markdownRemark } = data // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark
+
+  const isPastStream = compareDates(new Date(frontmatter.date), new Date())
+
   return (
     <Layout {...props} title="Yvonnick Frin">
       <Helmet
@@ -74,6 +83,7 @@ export default function Template({
       <Stream
         {...frontmatter}
         description={html}
+        calendar={!isPastStream}
       />
     </Layout>
   )
