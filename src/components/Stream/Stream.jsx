@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'gatsby'
+import YouTube from 'react-youtube'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
 import AddToCalendarHoc from 'react-add-to-calendar-hoc'
 
@@ -38,6 +40,8 @@ function Button({ children, onClick }) {
 
 const AddToCalendar = AddToCalendarHoc(Button, Dropdown)
 export function Stream (props) {
+  const [{ width, height }, setSize] = useState({ width: 0, height: 0 }) 
+
   const {
     title,
     date,
@@ -46,7 +50,9 @@ export function Stream (props) {
     duration,
     description,
     path,
+    video,
     calendar = false,
+    summary = false,
   } = props
   const event = {
     title,
@@ -58,14 +64,48 @@ export function Stream (props) {
   }
   return (
     <article className="stream">
-      <div>
-        <img src={`${path}.jpg`} alt="Social media card for the stream" />
+      <div className="stream-summary">
+        <div>
+          <img src={`${path}.jpg`} alt="Social media card for the stream" />
+        </div>
+        <div>
+          <h3><Link to={path}>{title}</Link></h3>
+          <small><FrenchDate date={date} /> ({startHour} - {endHour})</small>
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+          {calendar && <AddToCalendar event={event} className="add-calendar-container" />}
+        </div>
       </div>
       <div>
-        <h3><Link to={path}>{title}</Link></h3>
-        <small><FrenchDate date={date} /> ({startHour} - {endHour})</small>
-        <div dangerouslySetInnerHTML={{ __html: description }} />
-        {calendar && <AddToCalendar event={event} className="add-calendar-container" />}
+        {!summary && (
+          <>
+            <h4>Replay</h4>
+            <div style={{
+                height,
+              }}
+            >
+              <AutoSizer
+                defaultHeight={390}
+                defaultWidth={640}
+                onResize={({ width, height }) => {
+                  setSize({
+                    width,
+                    height: width * 0.609375,
+                  })
+                }}
+              >
+                {() => (
+                  <YouTube
+                    videoId={video}
+                    opts={{
+                      width,
+                      height,
+                    }}
+                  />
+                )}
+              </AutoSizer>
+            </div>
+          </>
+        )}
       </div>
     </article>
   )

@@ -28,15 +28,15 @@
   position: relative;
 }
 
-.stream {
+.stream-summary {
   display: flex;
 }
 
-.stream > * {
+.stream-summary > * {
   flex: 1;
 }
 
-.stream > *:first-child {
+.stream-summary > *:first-child {
   margin-right: 20px;
 }
 
@@ -58,11 +58,11 @@
 }
 
 @media screen and (max-width: 768px) {
-  .stream {
+  .stream-summary {
     flex-direction: column;
   }
 
-  .stream > *:first-child {
+  .stream-summary > *:first-child {
     margin-right: 0;
   }
 }

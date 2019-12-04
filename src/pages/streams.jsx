@@ -37,6 +37,7 @@ export default function({ data, ...props }) {
             {...nextStream.frontmatter}
             description={nextStream.html}
             calendar
+            summary
           /> 
         ) : (
           <p>Aucun stream prévu pour le moment</p>
@@ -50,6 +51,7 @@ export default function({ data, ...props }) {
             {...stream.frontmatter}
             description={stream.html}
             calendar
+            summary
           /> 
         )) : (
           <p>Aucun stream prévu pour le moment</p>
@@ -62,6 +64,7 @@ export default function({ data, ...props }) {
             key={stream.frontmatter.title}
             {...stream.frontmatter}
             description={stream.html}
+            summary
           /> 
         ))}        
       </div>

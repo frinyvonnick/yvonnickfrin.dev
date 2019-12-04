@@ -99,6 +99,7 @@ export const pageQuery = graphql`
         startHour
         endHour
         duration
+        video
       }
     }
   }

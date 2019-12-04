@@ -21,6 +21,8 @@
     "react-add-to-calendar-hoc": "^1.0.9",
     "react-dom": "^16.9.0",
     "react-github-btn": "^1.1.0",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-youtube": "^7.9.0",
     "request": "^2.88.0"
   }
 }
