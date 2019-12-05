@@ -21,6 +21,14 @@ module.exports = {
       },
     },
     'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://yvonnickfrin.dev',
+        sitemap: 'https://yvonnickfrin.dev/sitemap.xml',
+        policy: [{ userAgent: '*', allow: '/' }]
+      }
+    }
   ],
   siteMetadata: {
     siteUrl: 'https://yvonnickfrin.dev',
