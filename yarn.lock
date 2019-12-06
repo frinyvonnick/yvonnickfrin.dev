@@ -8917,6 +8917,14 @@ node-forge@0.7.5:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.5.tgz#6c152c345ce11c52f465c2abd957e8639cd674df"
   integrity sha512-MmbQJ2MTESTjt3Gi/3yG1wGpIMhUfcIypUCGtTizFR9IiccFwxSpfp0vtIZlkFclEqERemxfnSdZEMR9VqqEFQ==
 
+node-html-to-image@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/node-html-to-image/-/node-html-to-image-1.1.0.tgz#e18b86831697933b79aacdeeca05a159d27a6d6f"
+  integrity sha512-wRPCXFCDy2vKjBAcD6cMti+TQJjStltJrGY6cFedP+Ug9jpkI1B4zzFVxNrmqe5vTZO0YVyxP1vKls5Pe6DLUg==
+  dependencies:
+    handlebars "^4.5.3"
+    puppeteer "^2.0.0"
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
