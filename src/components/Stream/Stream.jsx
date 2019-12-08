@@ -78,32 +78,36 @@ export function Stream (props) {
       <div>
         {!summary && (
           <>
-            <h4>Replay</h4>
-            <div style={{
-                height,
-              }}
-            >
-              <AutoSizer
-                defaultHeight={390}
-                defaultWidth={640}
-                onResize={({ width, height }) => {
-                  setSize({
-                    width,
-                    height: width * 0.609375,
-                  })
-                }}
-              >
-                {() => (
-                  <YouTube
-                    videoId={video}
-                    opts={{
-                      width,
-                      height,
+            {video && (
+              <>
+                <h4>Replay</h4>
+                <div style={{
+                    height,
+                  }}
+                >
+                  <AutoSizer
+                    defaultHeight={390}
+                    defaultWidth={640}
+                    onResize={({ width, height }) => {
+                      setSize({
+                        width,
+                        height: width * 0.609375,
+                      })
                     }}
-                  />
-                )}
-              </AutoSizer>
-            </div>
+                  >
+                    {() => (
+                      <YouTube
+                        videoId={video}
+                        opts={{
+                          width,
+                          height,
+                        }}
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
