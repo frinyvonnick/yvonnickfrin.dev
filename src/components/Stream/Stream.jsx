@@ -78,6 +78,12 @@ export function Stream (props) {
       <div>
         {!summary && (
           <>
+            <h4>Informations</h4>
+            <div>
+              <ul>
+                <li><strong>Stream:</strong>&nbsp;<a href="https://www.twitch.tv/yvonnickfrin">https://www.twitch.tv/yvonnickfrin</a></li>
+              </ul>
+            </div>
             {video && (
               <>
                 <h4>Replay</h4>
