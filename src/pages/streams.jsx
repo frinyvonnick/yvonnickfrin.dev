@@ -24,7 +24,7 @@ export default function({ data, ...props }) {
     .sort((a, b) => compareDates(new Date(b.frontmatter.date), new Date(a.frontmatter.date)))
   const [nextStream, ...futureStreams] = streams
     .filter(s => compareDates(new Date(s.frontmatter.date), new Date()) >= 0)
-    .sort((a, b) => compareDates(new Date(b.frontmatter.date), new Date(a.frontmatter.date)))
+    .sort((a, b) => compareDates(new Date(a.frontmatter.date), new Date(b.frontmatter.date)))
   return (
     <Layout {...props} title="Yvonnick Frin">
       <Helmet>
