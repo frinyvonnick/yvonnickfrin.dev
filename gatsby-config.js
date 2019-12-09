@@ -34,7 +34,7 @@ module.exports = {
     siteUrl: 'https://yvonnickfrin.dev',
     title: `Yvonnick Frin`,
     author: `Yvonnick Frin`,
-    description: `Yvonnick Frin's blog`,
+    description: `Articles, Streams and Talks about JavaScript and its ecosystem.`,
     social: [
       {
         name: `twitter`,

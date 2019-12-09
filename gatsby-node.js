@@ -42,6 +42,17 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   })
 }
 
+exports.onCreatePage = async ({ page, actions }) => {
+  if (page.path === '/') {
+    const html = fs.readFileSync(path.join(__dirname, './src/templates/home-card-template.html')).toString('utf8')
+    await nodeHtmlToImage({
+      html,
+      output: `./public/home.jpg`,
+      type: 'jpeg',
+    })
+  }
+}
+
 exports.onCreateNode = async ({ node, actions }) => {
   const { createNode, createNodeField } = actions
 
