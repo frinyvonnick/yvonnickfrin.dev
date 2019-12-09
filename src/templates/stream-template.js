@@ -24,7 +24,7 @@ export default function Template({
   const { markdownRemark } = data // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark
 
-  const isPastStream = compareDates(new Date(frontmatter.date), new Date())
+  const isPastStream = compareDates(new Date(frontmatter.date), new Date()) < 0
 
   return (
     <Layout {...props} title="Yvonnick Frin">
