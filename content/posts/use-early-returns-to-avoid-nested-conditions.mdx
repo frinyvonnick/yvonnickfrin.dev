@@ -3,7 +3,7 @@ title: "DevTips: Use early returns to avoid nested conditions"
 date: 2019-12-12
 ---
 
-As developper you will encounter some patterns you should identify as [code smells](https://martinfowler.com/bliki/CodeSmell.html). Most of them have well known solutions. Today I want to talk about using early returns to avoid else statements and nested conditions.
+As a developper, you will encounter some patterns you should identify as [code smells](https://martinfowler.com/bliki/CodeSmell.html). Most of them have well known solutions. Today I want to talk about using early returns to avoid else statements and nested conditions.
 
 Let's take a example. I need to call a server to know if a person already exists in my database. The function that makes the call also return a loading indicator so I can inform the user.
 
@@ -26,9 +26,9 @@ render() {
 }
 ```
 
-As you can see the nested conditions and if/else statements are hard to read. You don't really understand what does this piece of code at first glance. I bet you already run into this pattern before? Let's refactor this a bit to make it more maintainable!
+As you can see the nested conditions and if/else statements are hard to read. You don't really understand what does this piece of code at first glance. I bet you already run into this pattern before. Let's refactor this a bit to make it more maintainable!
 
-If the call is still pending we can directly quit function and display the loading indicator.
+If the call is still pending we can directly quit the function and display the loading indicator.
 
 ```js
 render() {
