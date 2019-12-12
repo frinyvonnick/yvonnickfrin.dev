@@ -1,0 +1,78 @@
+---
+title: Shutdown correctly Node.js apps
+date: 2019-12-11
+---
+
+It is important to shutdown correctly your apps to handle well processing requests and prevent it to accept new ones. I'll take a web server as example.
+
+```js
+const http = require('http');
+
+const server = http.createServer(function (req, res) {
+  setTimeout(function () {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello World\n');
+  }, 4000);
+}).listen(9090, function (err) {
+  console.log('listening http://localhost:9090/');
+  console.log('pid is ' + process.pid);
+});
+```
+
+<br/>
+
+![Error when killing server](/images/kill-server.gif)
+
+As we see our server doesn't shutdown properly and processing requests don't get right responses. First of all we need to understand how a Node process is terminated in order to correct that.
+
+A process receives a signal when it is about to be killed. They are different kind of [signals](http://man7.org/linux/man-pages/man7/signal.7.html). We will be interested in three in particular:
+
+- SIGINT: Quit from keyboard (Ctrl + C).
+- SIGQUIT: Quit from keyboard (Ctrl + \). It also produce a [core dump](http://man7.org/linux/man-pages/man5/core.5.html) file.
+- SIGTERM: Quit from operating system (using kill command for example).
+
+Node.js emits events when the process receives signals. You can write an handler for these events. In this handler we will close our server so it deal with pending requests and prevent getting new ones.
+
+```js
+// ...
+function handleExit(signal) {
+  console.log(`Received ${signal}. Close my server properly.`)
+  server.close(function () {
+    process.exit(0);
+  });
+}
+
+process.on('SIGINT', handleExit);
+process.on('SIGQUIT', handleExit);
+process.on('SIGTERM', handleExit);
+```
+
+<br/>
+
+![Handle well killing server](/images/kill-server-properly.gif)
+
+Now our server handles well the request then shutdown correctly. You can read more in [Nairi Harutyunyan](https://twitter.com/nairihar)'s [nice article](https://medium.com/hackernoon/graceful-shutdown-in-nodejs-2f8f59d1c357). It explain in details how to shutdown properly a server with a database.
+
+It also exists an node module that handles this logic for you called [death](https://www.npmjs.com/package/death) (made by [JP Richardson](https://github.com/jprichardson)).
+
+```js
+const ON_DEATH = require('death')
+
+ON_DEATH(function(signal, err) {
+  // clean up code here
+})
+```
+
+<br/>
+
+## Sometimes it is not enough
+
+I ran into a situation recently where my server needed to accept new requests in order to shutdown properly. I'll give some explanations. My server subscribed to a webhook. This webhook have a limited quota of subscriptions. So if I don't want to exceed this quota I need to unsubscribe properly when my server shutdown. Here is the unsubscription workflow:
+
+1. Send a request to the webhhook to unsubscribe
+2. The webhook sent a request to the server to confirm unsubscription
+3. The server must respond with a specific token to validate the unsubscription
+
+A Node.js process will close automatically if its event loop is empty. As you can see between 1. and 2. the event loop is empty so you process will be terminated and you won't be able to unsubscribe successfully.
+
+First of all we need to prevent Node.js process exiting. To do this we can use the method `process.stdin.resume` that cause 
