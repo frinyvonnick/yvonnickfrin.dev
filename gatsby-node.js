@@ -43,13 +43,27 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 }
 
 exports.onCreatePage = async ({ page, actions }) => {
-  if (page.path === '/') {
-    const html = fs.readFileSync(path.join(__dirname, './src/templates/home-card-template.html')).toString('utf8')
-    await nodeHtmlToImage({
-      html,
-      output: `./public/home.jpg`,
-      type: 'jpeg',
-    })
+  // Made by gatsby theme blog
+  if (page.pluginCreatorId === '1b53d695-4767-5102-9bf5-665af3cc6db8') {
+    if (page.path === '/') {
+      const html = fs.readFileSync(path.join(__dirname, './src/templates/home-card-template.html')).toString('utf8')
+      await nodeHtmlToImage({
+        html,
+        output: `./public/home.jpg`,
+        type: 'jpeg',
+      })
+    } else {
+      const html = fs.readFileSync(path.join(__dirname, './src/templates/post-card-template.html')).toString('utf8')
+      await nodeHtmlToImage({
+        html,
+        output: `./public${page.path}.jpg`,
+        type: 'jpeg',
+        content: {
+          title: page.context.title,
+          backgroundColor: page.context.backgroundColor || '#baabda'
+        }
+      })
+    }
   }
 }
 

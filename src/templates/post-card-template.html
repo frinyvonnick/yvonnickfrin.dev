@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800&display=swap" rel="stylesheet">
+    <style type="text/css">
+      * {
+        font-family: 'Montserrat', sans-serif;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        height: 628px;
+        width: 1200px;
+        overflow: hidden;
+      }
+      main {
+        position: relative;
+        height: 100%;
+        display: flex;
+      }
+      .author {
+        background-image: url('https://avatars.io/twitter/yvonnickfrin');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 25%;
+      }
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: {{backgroundColor}};
+        padding: 80px;
+        position: relative;
+      }
+      h1 {
+        font-size: 68px;
+        margin: 0;
+      }
+      .card {
+        background-color: rgba(250, 250, 250, 0.9);
+        transform: rotate(2.5deg);
+        padding: 40px;
+      }
+      .website {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .website span {
+        font-size: 24px;
+        background-color: rgba(250, 250, 250, 0.9);
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="author"></div>
+      <div class="content">
+        <div class="card">
+          <h1>{{title}}</h1>
+        </div>
+        <div class="website"><span>http://yvonnickfrin.dev</span></div>
+      </div>
+    </main>
+  </body>
+</html>
+
+
