@@ -8,20 +8,13 @@ import { LocationContext } from './layout'
 function SEO({ description, lang, meta, keywords, title, date }) {
   const { location } = useContext(LocationContext)
 
-  const { blogPost } = useStaticQuery(
+  const { site, blogPost } = useStaticQuery(
     graphql`
       query MdxBlogPost($id: String) {
         blogPost(id: { eq: $id }) {
           id
           date(formatString: "YYYY-MM-DD")
         }
-      }
-    `
-  )
-
-  const { site } = useStaticQuery(
-    graphql`
-      query {
         site {
           siteMetadata {
             title

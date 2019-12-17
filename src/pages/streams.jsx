@@ -18,7 +18,6 @@ function compareDates(da, db) {
 export default function({ data, ...props }) {
   const streams = data.allMarkdownRemark.edges.map(({ node }) => node)
 
-  console.log('streams', streams)
   const pastStreams = streams
     .filter(s => compareDates(new Date(s.frontmatter.date), new Date()) < 0)
     .sort((a, b) => compareDates(new Date(b.frontmatter.date), new Date(a.frontmatter.date)))
