@@ -88,7 +88,7 @@ function SEO({ description, lang, meta, keywords, title, date }) {
           {
             "@context": "http://schema.org",
             "@type": "Article",
-            "name": ${title},
+            "name": "${title}",
             "author": {
               "@type": "Person",
               "name": "Yvonnick Frin"
