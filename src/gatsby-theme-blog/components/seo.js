@@ -93,7 +93,7 @@ function SEO({ description, lang, meta, keywords, title, date }) {
               "@type": "Person",
               "name": "Yvonnick Frin"
             },
-            "datePublished": ${blogPost.date}
+            "datePublished": "${blogPost.date}"
           }
         `}</script>
       )}
