@@ -9,6 +9,7 @@ export const LocationContext = React.createContext()
 
 export default ({ children, ...props }) => {
   const [pinnedRepositories, setPinnedRepositories] = useState([])
+  /*
   useEffect(() => {
     fetch('https://europe-west1-blog-256318.cloudfunctions.net/pinned-repositories')
       .then(res => res.json())
@@ -22,6 +23,7 @@ export default ({ children, ...props }) => {
         }))
       })
   }, [])
+  */
   return (
     <LocationContext.Provider value={{ location: props.location }}>
       <Styled.root>
