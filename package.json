@@ -8,6 +8,7 @@
     "build": "gatsby build"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "date-fns": "^2.8.1",
     "gatsby": "^2.13.73",
     "gatsby-plugin-google-analytics": "^2.1.19",
@@ -16,13 +17,13 @@
     "gatsby-source-filesystem": "^2.1.39",
     "gatsby-theme-blog": "^1.0.2",
     "gatsby-transformer-remark": "^2.6.38",
+    "node-fetch": "^2.6.0",
     "node-html-to-image": "^1.1.0",
     "react": "^16.9.0",
     "react-add-to-calendar-hoc": "^1.0.9",
     "react-dom": "^16.9.0",
     "react-github-btn": "^1.1.0",
     "react-virtualized-auto-sizer": "^1.0.2",
-    "react-youtube": "^7.9.0",
-    "request": "^2.88.0"
+    "react-youtube": "^7.9.0"
   }
 }

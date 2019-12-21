@@ -1,7 +1,7 @@
 const path = require(`path`)
 const { promisify } = require('util')
 const fs = require(`fs`)
-const request = require('request').defaults({ encoding: null });
+const fetch = require('node-fetch')
 const { fr } = require('date-fns/locale')
 const nodeHtmlToImage = require('node-html-to-image')
 const { format } = require('date-fns')
@@ -9,8 +9,7 @@ const { format } = require('date-fns')
 const existsAsync = promisify(fs.exists)
 const mkdirAsync = promisify(fs.mkdir)
 
-exports.createPages = async ({ actions, graphql, reporter }) => {
-  const { createPage } = actions
+async function makeStreams(createPage, graphql) {
   const streamTemplate = path.resolve(`src/templates/stream-template.js`)
   const result = await graphql(`
     {
@@ -42,6 +41,50 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   })
 }
 
+async function makeProjectNodes(createNode, createNodeId, createContentDigest) {
+  const res = await fetch('https://europe-west1-blog-256318.cloudfunctions.net/pinned-repositories')
+  const data = await res.json()
+  const pinnedRepositories = data.user.pinnedItems.nodes.map(({ __typename, ...item }) => {
+    return {
+      ...item,
+      stargazers: item.stargazers.totalCount,
+      primaryLanguage: item.primaryLanguage.name,
+    }
+  })
+
+  pinnedRepositories.forEach(repository => {
+    const nodeContent = JSON.stringify(repository)
+
+    const nodeMeta = {
+      id: createNodeId(`github-project-${repository.name}`),
+      repository: {
+        path: `/projects/${repository.name}`,
+        ...repository,
+      },
+      internal: {
+        type: `GithubProject`,
+        mediaType: `text/html`,
+        contentDigest: createContentDigest(repository)
+      }
+    }
+
+    const node = Object.assign({}, repository, nodeMeta)
+    createNode(node)
+  })
+}
+
+exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
+  const { createNode } = actions
+  
+  await makeProjectNodes(createNode, createNodeId, createContentDigest)
+}
+
+exports.createPages = async ({ actions, graphql, reporter }) => {
+  const { createPage } = actions
+
+  await makeStreams(createPage, graphql)
+}
+
 exports.onCreatePage = async ({ page, actions }) => {
   // Made by gatsby theme blog
   if (page.pluginCreatorId === '1b53d695-4767-5102-9bf5-665af3cc6db8') {
@@ -68,7 +111,7 @@ exports.onCreatePage = async ({ page, actions }) => {
 }
 
 exports.onCreateNode = async ({ node, actions }) => {
-  const { createNode, createNodeField } = actions
+  const { createNode, createNodeField, createPage } = actions
 
   const alreadyExists = await existsAsync(path.join(__dirname, '/public/streams'))
   if (!alreadyExists) {
@@ -100,6 +143,13 @@ exports.onCreateNode = async ({ node, actions }) => {
       content,
       type: 'jpeg',
       puppeteerArgs: { args: ['--lang=fr-FR,fr'] }
+    })
+  } else if (node.internal.type === 'GithubProject') {
+    const projectTemplate = path.resolve(`src/templates/project-template.js`)
+    createPage({
+      path: node.repository.path,
+      component: projectTemplate,
+      context: {}, // additional data can be passed via context
     })
   }
 }

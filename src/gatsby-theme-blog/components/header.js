@@ -21,8 +21,9 @@ export default props => {
         })}
       >
         <nav>
-          <Link className={!props.location.pathname.includes('/streams') ? 'selected' : ''} to="/">Blog</Link>
+          <Link className={!(props.location.pathname.includes('/streams') || props.location.pathname.includes('/projects')) ? 'selected' : ''} to="/">Blog</Link>
           <Link className={props.location.pathname.includes('/streams') ? 'selected' : ''} to="/streams">Streaming</Link>
+          <Link className={props.location.pathname.includes('/projects') ? 'selected' : ''} to="/projects">Projects</Link>
         </nav>
       </div>
     </>

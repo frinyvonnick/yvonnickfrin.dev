@@ -1,0 +1,37 @@
+.projects-title {
+  margin: 0;
+}
+
+.projects-subtitle {
+  margin-top: 0;
+  margin-bottom: 50px;
+}
+
+.project {
+  margin-bottom: 50px;
+}
+
+.project h2 {
+  padding-bottom: 10px;
+  border-bottom: 3px solid;
+}
+
+.project h2 a {
+  text-decoration: none;
+}
+
+.project-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+}
+
+.project-links {
+  display: flex;
+  justify-content: space-between;
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+}

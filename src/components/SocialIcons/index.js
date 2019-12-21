@@ -1,1 +1,1 @@
-export { SocialIcons } from './SocialIcons'
+export * from './SocialIcons'

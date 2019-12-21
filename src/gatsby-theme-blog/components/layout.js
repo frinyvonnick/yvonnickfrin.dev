@@ -37,6 +37,7 @@ export default ({ children, ...props }) => {
             })}
           >
             {children}
+            {/*
             <div className="projects">
               <Styled.hr className="separator" />
               <Styled.h3>Projects</Styled.h3>
@@ -50,6 +51,7 @@ export default ({ children, ...props }) => {
                 ))}
               </Styled.ul>
             </div>
+            */}
           </div>
         </div>
       </Styled.root>
