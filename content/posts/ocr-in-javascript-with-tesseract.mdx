@@ -137,6 +137,38 @@ const PSM = require('tesseract.js/src/constants/PSM.js')
 Finally, we call `setParameters` method with the wanted mode. For the example, we will use `AUTO` mode and let the engine find all lines.
 
 ```js
+// ...
+
+async function getTextFromImage() {
+  await worker.load()
+  await worker.loadLanguage('eng')
+  await worker.initialize('eng')
+  await worker.setParameters({
+    tessedit_pageseg_mode: PSM.AUTO,
+  })
+
+  const { data: { text } } = await worker.recognize('./hello-world.png');
+
+  await worker.terminate()
+}
+
+// ...
+```
+
+By calling your should get a different result.
+
+```sh
+~ ❯ node tesseract.js                                                                                                                                                   ⏎
+HELLO WORLD!
+
+made with € by node-html-to-image
+```
+
+As you can see it find the whole text. It seems to have difficulties to identify the emoji character but it is a pretty impressive result.
+
+Here is the final code:
+
+```js
 const { createWorker } = require('tesseract.js')
 const PSM = require('tesseract.js/src/constants/PSM.js')
 
@@ -152,18 +184,10 @@ async function getTextFromImage() {
 
   await worker.terminate()
 }
+
+getTextFromImage()
+  .then(console.log)
 ```
-
-By calling your should get a different result.
-
-```sh
-~ ❯ node tesseract.js                                                                                                                                                   ⏎
-HELLO WORLD!
-
-made with € by node-html-to-image
-```
-
-As you can see it find the whole text. It seems to have difficulties to identify the emoji character but it is a pretty impressive result.
 
 There are a lot more [examples](https://github.com/naptha/tesseract.js/blob/master/docs/examples.md) in Tesseract.js documentation with extra features like:
 
