@@ -1,5 +1,4 @@
 import React from "react"
-import { Helmet } from "react-helmet"
 import { graphql, Link } from "gatsby"
 import { css, useColorMode, Styled } from "theme-ui"
 import GitHubButton from 'react-github-btn'
