@@ -137,7 +137,8 @@ const PSM = require('tesseract.js/src/constants/PSM.js')
 Finally, we call `setParameters` method with the wanted mode. For the example, we will use `AUTO` mode and let the engine find all lines.
 
 ```js
-// ...
+const { createWorker } = require('tesseract.js')
+const PSM = require('tesseract.js/src/constants/PSM.js')
 
 async function getTextFromImage() {
   await worker.load()
