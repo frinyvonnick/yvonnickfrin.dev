@@ -106,6 +106,8 @@ async function getTextFromImage() {
   const { data: { text } } = await worker.recognize('./hello-world.png');
 
   await worker.terminate()
+  
+  return text
 }
 ```
 
@@ -150,6 +152,8 @@ async function getTextFromImage() {
   const { data: { text } } = await worker.recognize('./hello-world.png');
 
   await worker.terminate()
+  
+  return text
 }
 
 // ...
@@ -183,6 +187,8 @@ async function getTextFromImage() {
   const { data: { text } } = await worker.recognize('./hello-world.png');
 
   await worker.terminate()
+  
+  return text
 }
 
 getTextFromImage()
