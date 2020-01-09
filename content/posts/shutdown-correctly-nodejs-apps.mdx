@@ -102,7 +102,7 @@ const server = http.createServer(function (req, res) {
 });
 ```
 
-They are two changes. When server starts listening on port 9090 we send a first request to subscribe our server to the webhook.
+There are two changes. When the server starts listening on port 9090 we send a first request to subscribe our server to the webhook.
 
 ```js
 // ...
@@ -112,7 +112,7 @@ fetch('http://localhost:3000/webhook?mode=subscribe&callback=http://localhost:90
 // ...
 ```
 
-We also changed our server's request handle to let him confirm the subscription to the webhook by responding with the token called `challenge`.
+We also changed our server's request handler to let him confirm the subscription to the webhook by responding with the token called `challenge`.
 
 ```js
 // ...
@@ -137,7 +137,7 @@ function handleExit(signal) {
 }
 ```
 
-We need to update the code that respond with the challenge to kill our server's process when the webhook confirm the unsubscription.
+We need to update the code that responds with the challenge to kill our server's process when the webhook confirms the unsubscription.
 
 ```js
 // ...
@@ -158,15 +158,15 @@ if (params.mode) {
 // ...
 ```
 
-When the webhook confirm we unsubscribed from it, we close our server so it stop getting new requests and exit our process properly. This is how [Twitch API](https://dev.twitch.tv/docs/api/webhooks-guide) webhooks subscription/unsubscription works.
+When the webhook confirms the unsubscription, we close our server so it stops getting new requests and exits our process properly. This is how the [Twitch API](https://dev.twitch.tv/docs/api/webhooks-guide) webhooks subscription/unsubscription works.
 
 Let's see how our server acts when we try to shut it down. I added some logs to make it more visual.
 
 ![Error when killing server with webhook](/images/kill-webhook.gif)
 
-As you can see, it doesn't shutdown properly. The server's process is terminated before we get the webhook request that confirm unsubscription. So the webhook keep sending events to our server.
+As you can see, it doesn't shutdown properly. The server's process is terminated before we get the webhook request that confirms unsubscription. So the webhook keeps sending events to our server.
 
-To fix this we need to prevent Node.js process exiting. We can use the method `process.stdin.resume` that causes the process to pause and override disable default behavior like exiting on `Ctrl+C`.
+To fix this we need to prevent the Node.js process from exiting. We can use the method `process.stdin.resume` that causes the process to pause and override disable default behavior like exiting on `Ctrl+C`.
 
 ```js
 const http = require('http');
@@ -180,7 +180,7 @@ And now?
 
 ![Error when killing server with webhook properly](/images/kill-webhook-properly.gif)
 
-Nice, it now waits the confirmation before exiting the process.
+Nice, it now waits for the confirmation before exiting the process.
 
 I made a [repository](https://github.com/frinyvonnick/node-shutdown-properly-webhooks) with all the sources presented in this article.
 
