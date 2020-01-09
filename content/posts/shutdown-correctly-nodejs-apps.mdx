@@ -23,15 +23,15 @@ const server = http.createServer(function (req, res) {
 
 ![Error when killing server](/images/kill-server.gif)
 
-As we see our server doesn't shutdown properly and processing requests don't get right responses. First of all we need to understand how a Node process is terminated in order to correct that.
+As we see our server doesn't shutdown properly and processing requests don't get right responses. First of all we need to understand how a Node process is terminated in order to fix it.
 
-A process receives a signal when it is about to be killed. They are different kind of [signals](http://man7.org/linux/man-pages/man7/signal.7.html). We will be interested in three in particular:
+A process receives a signal when it is about to be killed. They are different kind of [signals](http://man7.org/linux/man-pages/man7/signal.7.html). We will focus on three of them in particular:
 
 - SIGINT: Quit from keyboard (Ctrl + C).
 - SIGQUIT: Quit from keyboard (Ctrl + \). It also produce a [core dump](http://man7.org/linux/man-pages/man5/core.5.html) file.
 - SIGTERM: Quit from operating system (using kill command for example).
 
-Node.js emits events when the process receives signals. You can write an handler for these events. In this handler we will close our server so it deal with pending requests and prevent getting new ones.
+Node.js emits events when the process receives signals. You can write a handler for these events. In this one we will close our server so it deals with pending requests and prevent getting new ones.
 
 ```js
 // ...
@@ -67,13 +67,13 @@ ON_DEATH(function(signal, err) {
 
 ## Sometimes it is not enough
 
-I ran into a situation recently where my server needed to accept new requests in order to shutdown properly. I'll give some explanations. My server subscribed to a webhook. This webhook have a limited quota of subscriptions. So if I don't want to exceed this quota I need to unsubscribe properly when my server shutdown. Here is the unsubscription workflow:
+I ran into a situation recently where my server needed to accept new requests in order to shutdown properly. I'll give some explanations. My server subscribed to a webhook. This webhook has a limited quota of subscriptions. So if I don't want to exceed this quota I need to unsubscribe properly when my server shutdown. Here is the unsubscription workflow:
 
 1. Send a request to the webhhook to unsubscribe
 2. The webhook sent a request to the server to confirm unsubscription
 3. The server must respond with a specific token to validate the unsubscription
 
-A Node.js process will close automatically if its event loop is empty. As you can see between 1. and 2. the event loop is empty so you process will be terminated and you won't be able to unsubscribe successfully.
+A Node.js process will close automatically if its event loop is empty. As you can see between 1. and 2. the event loop is empty so the process will be terminated and we won't be able to unsubscribe successfully.
 
 Here is the new server codebase we will use:
 
@@ -102,7 +102,7 @@ const server = http.createServer(function (req, res) {
 });
 ```
 
-They are two changes. When server start listening on port 9090 we send a first request to subscribe ou server to the webhook.
+They are two changes. When server starts listening on port 9090 we send a first request to subscribe our server to the webhook.
 
 ```js
 // ...
@@ -112,7 +112,7 @@ fetch('http://localhost:3000/webhook?mode=subscribe&callback=http://localhost:90
 // ...
 ```
 
-We also changed our server's request handle to let him confirm the subscription to the webhook by responding the challenge.
+We also changed our server's request handle to let him confirm the subscription to the webhook by responding with the token called `challenge`.
 
 ```js
 // ...
@@ -160,13 +160,13 @@ if (params.mode) {
 
 When the webhook confirm we unsubscribed from it, we close our server so it stop getting new requests and exit our process properly. This is how [Twitch API](https://dev.twitch.tv/docs/api/webhooks-guide) webhooks subscription/unsubscription works.
 
-Let's see how our server acts when we try to shutdown it. I added some logs to make it more visual.
+Let's see how our server acts when we try to shut it down. I added some logs to make it more visual.
 
 ![Error when killing server with webhook](/images/kill-webhook.gif)
 
-As you can see, it doesn't shutdown properly. The server's process is killed before we get the webhook request that confirm unsubscription so the webhook keep sending events to our server.
+As you can see, it doesn't shutdown properly. The server's process is terminated before we get the webhook request that confirm unsubscription. So the webhook keep sending events to our server.
 
-To fix this we need to prevent Node.js process exiting. We can use the method `process.stdin.resume` that cause the process to pause and override disable default behavior like exiting on `Ctrl+C`.
+To fix this we need to prevent Node.js process exiting. We can use the method `process.stdin.resume` that causes the process to pause and override disable default behavior like exiting on `Ctrl+C`.
 
 ```js
 const http = require('http');
@@ -180,7 +180,7 @@ And now?
 
 ![Error when killing server with webhook properly](/images/kill-webhook-properly.gif)
 
-Nice, it now wait the confirmation before exiting the process.
+Nice, it now waits the confirmation before exiting the process.
 
 Hope it will help 🙌
 
