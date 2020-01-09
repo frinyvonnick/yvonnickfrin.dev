@@ -128,16 +128,6 @@ if (params.mode) {
 // ...
 ```
 
-First of all we need to prevent Node.js process exiting. To do this we can use the method `process.stdin.resume` that cause the process to pause and override disable default behavior like exiting on `Ctrl+C`.
-
-```js
-const http = require('http');
-
-process.stdin.resume();
-
-// ...
-```
-
 Let's change the `handleExit` function's implementation to send a request to our webhook. We ask the webhook to unsubcribe our server.
 
 ```js
@@ -147,7 +137,7 @@ function handleExit(signal) {
 }
 ```
 
-Thanks to `process.stdin.resume` our server's process doesn't exit after sending the request. We need to handle update the code that respond with the challenge to kill our server's process.
+We need to update the code that respond with the challenge to kill our server's process when the webhook confirm the unsubscription.
 
 ```js
 // ...
@@ -169,6 +159,28 @@ if (params.mode) {
 ```
 
 When the webhook confirm we unsubscribed from it, we close our server so it stop getting new requests and exit our process properly. This is how [Twitch API](https://dev.twitch.tv/docs/api/webhooks-guide) webhooks subscription/unsubscription works.
+
+Let's see how our server acts when we try to shutdown it. I added some logs to make it more visual.
+
+![Error when killing server with webhook](/images/kill-webhook.gif)
+
+As you can see, it doesn't shutdown properly. The server's process is killed before we get the webhook request that confirm unsubscription so the webhook keep sending events to our server.
+
+To fix this we need to prevent Node.js process exiting. We can use the method `process.stdin.resume` that cause the process to pause and override disable default behavior like exiting on `Ctrl+C`.
+
+```js
+const http = require('http');
+
+process.stdin.resume();
+
+// ...
+```
+
+And now?
+
+![Error when killing server with webhook properly](/images/kill-webhook-properly.gif)
+
+Nice, it now wait the confirmation before exiting the process.
 
 Hope it will help 🙌
 
