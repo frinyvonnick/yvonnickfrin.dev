@@ -11,7 +11,8 @@ function formatEventDate(date, time) {
   const result = new Date(date)
   const [hours, minutes] = time.split(':')
   result.setHours(hours, minutes)
-  return `${result.getFullYear()}${result.getMonth() + 1}${result.getDate() < 10 ? `0${result.getDate()}` : result.getDate()}T${hours}${minutes}00`
+  const month = result.getMonth() + 1
+  return `${result.getFullYear()}${month < 10 ? `0${month}` : month}${result.getDate() < 10 ? `0${result.getDate()}` : result.getDate()}T${hours}${minutes}00`
 }
 
 function FrenchDate({ date }) {
