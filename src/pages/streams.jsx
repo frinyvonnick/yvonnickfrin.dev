@@ -22,7 +22,7 @@ export default function({ data, ...props }) {
   const pastStreams = streams
     .filter(s => compareDates(new Date(s.frontmatter.date), new Date()) < 0)
     .sort((a, b) => compareDates(new Date(b.frontmatter.date), new Date(a.frontmatter.date)))
-  const [nextStream, ...futureStreams] = streams
+  const nextStreams = streams
     .filter(s => compareDates(new Date(s.frontmatter.date), new Date()) >= 0)
     .sort((a, b) => compareDates(new Date(a.frontmatter.date), new Date(b.frontmatter.date)))
   return (
@@ -37,21 +37,8 @@ export default function({ data, ...props }) {
         Habituellement je streame le dimanche de 16h à 18h et le mardi de 20h à 22h. N'hésitez pas à suivre <Styled.a href="https://www.twitch.tv/yvonnickfrin">ma chaine Twitch</Styled.a> pour être averti lorsque le stream commence.
       </Styled.p>
       <div className="streams">
-        <h2>Prochain stream</h2>
-        {nextStream ? (
-          <Stream
-            {...nextStream.frontmatter}
-            description={nextStream.html}
-            calendar
-            summary
-          /> 
-        ) : (
-          <p>Aucun stream prévu pour le moment</p>
-        )}
-      </div>
-      <div className="streams">
-        <h2>Streams à venir</h2>
-        {futureStreams.length ? futureStreams.map(stream => (
+        <h2>Prochains streams</h2>
+        {nextStreams.length ? nextStreams.map(stream => (
           <Stream
             key={stream.frontmatter.title}
             {...stream.frontmatter}
