@@ -1,0 +1,71 @@
+---
+title: A guide on commit messages
+date: 2020-01-29
+---
+
+In this article we will talk about writing good commit messages not good commits even if these two subject are closely linked. Here is a [good article](https://www.git-tower.com/blog/version-control-best-practices/) from Tobias Günther that summarize well best practices about version control. 
+
+## Why commit message are important
+
+- First way to communicate change to fellows developers
+  - The diff is the what the commit message is the why
+- Make a lot of git commands much more useful
+  - Review changes without other tools than git (git log -p)
+  - Catch up when coming back from holidays using git log
+  - Make rebase less random
+  - Don't know why a line of code is made like that use git blame (it is not made to insult your co-workers)
+- Speed up reviewing process
+  - Reduce time to get context of a change (this time is mutiplied by the number of reviewer)
+- Generate nice changelog (changes between two versions)
+- Make projects easier to maintain in long term
+  - With a good commit message it is easier to catch up why some change was made five years ago
+
+## How to write a good commit message
+
+Now that you are convinced commit messages are important. Let's talk about how to write a good commit message.
+
+If you have difficulties to find out what message you should write maybe you should split your commit in smaller parts. Peter Hutterer listed in his article [On commit messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html) a few examples where it is difficult to find out a good commit message because your commit patch may not be logical.
+
+There a few coventions we will talk about later in this post but the most important thing is to agree on a way to write commit with your team in order to have a consistent commit history.
+
+Chris beams enforce 7 rules to write a good commit.
+
+>> 1. Separate subject from body with a blank line
+>> 2. Limit the subject line to 50 characters
+>> 3. Capitalize the subject line
+>> 4. Do not end the subject line with a period
+>> 5. Use the imperative mood in the subject line
+>> 6. Wrap the body at 72 characters
+>> 7. Use the body to explain what and why vs. how
+>>
+>> Chris Beams - [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
+
+I personnally apply a subset of this rules:
+
+- Limit the subject line to 50 characters
+- Capitalize the subject line
+- Use the imperative mood in the subject line
+
+Explanations about the 50 characters : https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+
+I tend to think the perfect is the enemy of the good. That is why I omitted talking about commit's body. I think we have enough work to do on summary line. Most of the time, we use tools to discuss during a code review process like GitHub, Gitlab, ... All pieces of information about the change will be at least described there. I added a rule about tracking ID so it becomes easy to find related pull/merge request.
+
+I would add one rule
+
+- Add a pull request/merge request tracking ID
+
+Writing a commit body is better because if you change your repository manager solution you will loose all this precious context information and your tracking IDs will be useless.
+
+### Bonus
+
+Don't forget to add co-worker's name if you made it in pair-programming (co authored)
+
+## Commit conventions
+
+There are a few conventions that comes with tools to facilitate your day to day work. CLIs to create commits message and changelogs. There are well documented so you don't have to write documentation about your own commit message convention.
+
+### conventionnal commits
+- Monorepo
+
+### gitmoji
+- Visual
