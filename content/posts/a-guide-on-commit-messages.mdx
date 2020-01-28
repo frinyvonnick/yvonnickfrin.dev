@@ -3,26 +3,35 @@ title: A guide on commit messages
 date: 2020-01-29
 ---
 
-In this article we will talk about writing good commit messages not good commits even if these two subject are closely linked. Here is a [good article](https://www.git-tower.com/blog/version-control-best-practices/) from Tobias Günther that summarize well best practices about version control. 
+The time you had an archive on your disk called "version 1" should be far away. I bet you use some tool for version control like GitHub, Gitlab, Bitbucket, ... So you must write commits everytime you want to add your code to a project. Did you ever ask yourself if your commits messages are good? Maybe you don't like writing them and wonder why you have to write it every time you want to push code. After all the change must be sufficient enough? 
+
+In this article, we will talk about writing good commit messages not good commits even if these two subjects are closely linked (here is a [good article](https://www.git-tower.com/blog/version-control-best-practices/) from Tobias Günther that summarize well best practices about version control).
 
 ## Why commit message are important
 
-- First way to communicate change to fellows developers
-  - The diff is the what the commit message is the why
-- Make a lot of git commands much more useful
-  - Review changes without other tools than git (git log -p)
-  - Catch up when coming back from holidays using git log
-  - Make rebase less random
-  - Don't know why a line of code is made like that use git blame (it is not made to insult your co-workers)
-- Speed up reviewing process
-  - Reduce time to get context of a change (this time is mutiplied by the number of reviewer)
-- Generate nice changelog (changes between two versions)
-- Make projects easier to maintain in long term
-  - With a good commit message it is easier to catch up why some change was made five years ago
+So, is the change is sufficient? Obviously, the answer is no. But why?
+
+Commit messages have a lot of usages. This is the first way to communicate with your fellow developers on a project. The change is the "What" the commit message is the "Why". It must give enough context to a developper that might ask himself why some code is written like that. When a commit message gives you enough context about the change you won't spend precious time asking yourself the reason a developer push this code. In some case like open source projects busy maintainers won't even read your code if you don't give them a minimum of information like a nicely written commit message.
+
+Commit messages are not only for your coworkers but also for your future self as Peter Hutterer said in this great article [On commit messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html).
+
+> Any software project is a collaborative project. It has at least two developers, the original developer and the original developer a few weeks or months later when the train of thought has long left the station.
+>
+> Peter Hutterer - [On commit messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html)
+
+A project is made to be maintained in the long term. Sometimes years after a piece of code has been written you will ask yourself why it has been written like that. It happened to me this week on function I have written only 6 months ago. With a well written commit message it is easier to get back in the state of mind at the time you wrote this change.
+
+Taking care of your commit messages can also simplify your daily life. Some tools becomes more interesting with a meaningful commit history like a few git commands `log`, `rebase`, `cherry-pick`, ... When you come back from holidays a simple `git log --pretty` will give you a lot of information about what your coworkers did while you was away. Writing good commit messages force you to split your change making it easier to review with `git log -p`.
+
+Speaking of review did you ever struggle rebasing your code on some change a developer made? It becomes easier to know why a change was made if the commit message carries real meaning. It makes `rebase` result much more predictible. Another example is `git blame` command which by the way is not made to make fun of your colleagues but giving you context on a line of code you come accross. It can be pretty useful when you want to refactor a piece of code. 
+
+Last but not least, a well structured commit history enables generating a changelog between two version of your project to inform your users what changed.
+
+This is a huge amount of reasons to start taking time to write good commit messages.
 
 ## How to write a good commit message
 
-Now that you are convinced commit messages are important. Let's talk about how to write a good commit message.
+Now that you are convinced commit messages are important. Let's talk about how to write good ones.
 
 If you have difficulties to find out what message you should write maybe you should split your commit in smaller parts. Peter Hutterer listed in his article [On commit messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html) a few examples where it is difficult to find out a good commit message because your commit patch may not be logical.
 
