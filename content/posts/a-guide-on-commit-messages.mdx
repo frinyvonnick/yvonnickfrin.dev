@@ -110,10 +110,45 @@ Co-authored-by: another-name <another-name@example.com>"
 
 ## Commit conventions
 
-There are a few conventions that comes with tools to facilitate your daily life. CLIs to create commits message and changelogs. There are well documented so you don't have to write documentation about your own commit message convention.
+As we talked in the previous section you should define a commit convention for your team. It exists open source commit convention that could be a good source of inspiration. They also come with a whole ecosystem that includes tools to help you write commit messages, generate changelog, create releases, ... A lot of things that can take a large amount of time. There are well documented so you don't have to write documentation about your own commit message convention.
 
-### conventionnal commits
-- Monorepo
+We will talk about two of them [Conventional Commits](https://conventionalcommits.org) and [gitmoji](https://gitmoji.carloscuesta.me/).
+
+### Conventional Commits
+
+It is a specification inspired from [Angular commit message guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines). It features a few interesting rules like:
+
+- Commit must be prefixed with a type (feat, fix)
+- A scope may be provided to point out a specific section a the codebase (really interesting for monorepos)
+- Breaking changes must be included in a footer section
+
+Here is how a commit message must be structured using this specification:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+Read more in their [specification section](https://www.conventionalcommits.org/en/v1.0.0/#specification).
 
 ### gitmoji
-- Visual
+
+I'm fond of gitmoji commit convention. It lies on categorizing commits using emojies. I'm a visual person so it fits well to me but I understand this convention is not made for everyone.
+
+I was not totally honest in my previous commit examples from [gitmoji-changelog](). There is a missing part as you should have guessed now.
+
+// Exemple avec text
+```
+```
+
+Most of the repository manager tools like GitHub or GitLab interprets these textual aliases for emojies and display it well in their UI:
+
+// Exemple avec emojis
+```
+```
+
+I like this convention because I know at first glance what kind of change do a commit. It comes with a cli called [gitmoji-cli]() that helps you write your commit messages and I made a changelog generator for it.
+
