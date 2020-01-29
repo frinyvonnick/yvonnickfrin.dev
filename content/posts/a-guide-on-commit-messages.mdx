@@ -3,15 +3,15 @@ title: A guide on commit messages
 date: 2020-01-29
 ---
 
-The time you had an archive on your disk called "version 1" should be far away. I bet you use some tool for version control like GitHub, Gitlab, Bitbucket, ... So you must write commits everytime you want to add your code to a project. Did you ever ask yourself if your commits messages are good? Maybe you don't like writing them and wonder why you have to write it every time you want to push code. After all the change must be sufficient enough? 
+The time you had an archive file on your disk called "version 1" should be far away. I bet you use some tool for version control like GitHub, Gitlab, Bitbucket, ... So you must write commits everytime you want to add your code to a project. Did you ever ask yourself if your commits messages are good? Maybe you don't like writing them and wonder why you have to write it every time you want to push code. After all the change must be sufficient enough? 
 
 In this article, we will talk about writing good commit messages not good commits even if these two subjects are closely linked (here is a [good article](https://www.git-tower.com/blog/version-control-best-practices/) from Tobias Günther that summarize well best practices about version control).
 
-## Why commit message are important
+## Why commit message are important?
 
 So, is the change sufficient? Obviously, the answer is no. But why?
 
-Commit messages have a lot of usages. This is the first way to communicate with your fellow developers on a project. The change is the "What" the commit message is the "Why". It must give enough context to a developper that might ask himself why some code is written like that. When a commit message gives you enough context about the change you won't spend precious time asking yourself the reason a developer push this code. In some case like open source projects busy maintainers won't even read your code if you don't give them a minimum of information like a nicely written commit message.
+Commit messages have a lot of uses. This is the first way to communicate with your fellow developers on a project. The change defines how you achieve something but the commit message explains why you are doing it. It must give enough context to a developper that might ask himself why some code is written like that. With proper explanations you won't spend precious time asking yourself the reason a developer pushed this code. In some cases like open source projects busy maintainers won't even read your code if you don't give them a minimum of information like a nicely written commit message.
 
 Commit messages are not only for your coworkers but also for your future self as Peter Hutterer said in this great article [On commit messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html).
 
@@ -19,11 +19,11 @@ Commit messages are not only for your coworkers but also for your future self as
 >
 > Peter Hutterer - [On commit messages](http://who-t.blogspot.com/2009/12/on-commit-messages.html)
 
-A project is made to be maintained in the long term. Sometimes years after a piece of code has been written you will ask yourself why it has been written like that. It happened to me this week on function I have written only 6 months ago. With a well written commit message it is easier to get back in the state of mind at the time you wrote this change.
+A project is made to be maintained in the long term. Sometimes years after a piece of code has been written you will ask yourself why it has been written like that. It happened to me this week on function I coded only 6 months ago. With a well written commit message it is easier to get back in the state of mind at the time you wrote this change.
 
 Taking care of your commit messages can also simplify your daily life. Some tools becomes more interesting with a meaningful commit history like a few git commands `log`, `rebase`, `cherry-pick`, ... When you come back from holidays a simple `git log --pretty` will give you a lot of information about what your coworkers did while you was away. Writing good commit messages force you to split your change making it easier to review with `git log -p`.
 
-Speaking of review did you ever struggle rebasing your code on some change a developer made? It becomes easier to know why a change was made if the commit message carries real meaning. It makes `rebase` result much more predictible. Another example is `git blame` command which by the way is not made to make fun of your colleagues but giving you context on a line of code you come accross. It can be pretty useful when you want to refactor a piece of code. 
+Speaking of review did you ever struggle rebasing your code on some change a developer made? It becomes easier to know why a change was made if the commit message carries real meaning. It makes `rebase` result much more predictible. Another example is `git blame` command which is by the way not made to make fun of your colleagues but giving you context on a line of code you come accross. It can be pretty useful when you want to refactor a piece of code. 
 
 Last but not least, a well structured commit history enables generating a changelog between two version of your project to inform your users what changed.
 
@@ -55,7 +55,7 @@ In these commit message we can see a few mistakes in term of style, content and 
 > 
 > Chris Beams - [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
 
-We can see sometimes a captialize message. There are metadata for only two commits. Finally some message's content are so light we can't figure out what the commit does. In the same article Chris goes through 7 rules to write a good commit message.
+We can see sometime a captialized message. There are metadata for only two commits. Finally some messages content are so light we can't figure out what the commit does. In the same article Chris goes through 7 rules to write a good commit message.
 
 > 1. Separate subject from body with a blank line
 > 2. Limit the subject line to 50 characters
@@ -73,9 +73,9 @@ I personnally apply a subset of these rules:
 - Capitalize the subject line
 - Use the imperative mood in the subject line
 
-The characters limit does not only force you to be concise which is a great skill but also fits well with a lot of tools as explained in Tim Pope article [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
+The character limit does not only force you to be concise which is a great skill but also fits well with a lot of tools as explained in Tim Pope article [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
-I tend to think the perfect is the enemy of the good. That is why I omitted talking about commit's body. I think we have enough work to do on summary line. But I would add one rule as counterpart:
+I tend to think the perfect is the enemy of the good. That is why I omitted talking about commit messages body. I think we have enough work to do on the summary line. But I would add one rule as counterpart:
 
 - Add a pull request/merge request tracking ID
 
@@ -110,7 +110,7 @@ Co-authored-by: another-name <another-name@example.com>"
 
 ## Commit conventions
 
-As we talked in the previous section you should define a commit convention for your team. It exists open source commit convention that could be a good source of inspiration. They also come with a whole ecosystem that includes tools to help you write commit messages, generate changelog, create releases, ... A lot of things that can take a large amount of time. There are well documented so you don't have to write documentation about your own commit message convention.
+As we talked in the previous section you should define a commit convention for your team. It exists open source commit conventions that could be a good source of inspiration. They also come with a whole ecosystem that includes tools to help you write commit messages, generate changelog, create releases, ... A lot of things that can take a large amount of time. There are well documented so you don't have to write documentation about your own commit message convention.
 
 We will talk about two of them [Conventional Commits](https://conventionalcommits.org) and [gitmoji](https://gitmoji.carloscuesta.me/).
 
@@ -138,17 +138,32 @@ Read more in their [specification section](https://www.conventionalcommits.org/e
 
 I'm fond of gitmoji commit convention. It lies on categorizing commits using emojies. I'm a visual person so it fits well to me but I understand this convention is not made for everyone.
 
-I was not totally honest in my previous commit examples from [gitmoji-changelog](). There is a missing part as you should have guessed now.
+I was not totally honest in my previous commit examples from [gitmoji-changelog](https://github.com/frinyvonnick/gitmoji-changelog). There is a missing part as you should have guessed now.
 
-// Exemple avec text
 ```
+:recycle: Make core independent from the git client (#171)
+:whale: Upgrade Docker image version (#167)
+:sparkles: Add maven preset (#172)
+:sparkles: Add a generic preset using configuration file (#160)
+:recycle: Improve error messages for preset system (#161)
+:construction_worker: Publish Canary version on master push (#141)
 ```
 
-Most of the repository manager tools like GitHub or GitLab interprets these textual aliases for emojies and display it well in their UI:
+These text aliases are widely used in tools like Slack, Discord, ... Most of the repository manager tools like GitHub or GitLab interprets them and display it well in their UI:
 
-// Exemple avec emojis
 ```
+♻️ Make core independent from the git client (#171)
+🐳 Upgrade Docker image version (#167)
+✨ Add maven preset (#172)
+✨ Add a generic preset using configuration file (#160)
+♻️ Improve error messages for preset system (#161)
+👷‍♂️ Publish Canary version on master push (#141)
 ```
 
 I like this convention because I know at first glance what kind of change do a commit. It comes with a cli called [gitmoji-cli]() that helps you write your commit messages and I made a changelog generator for it.
 
+It exists more of them. Keep in mind these are guidelines, you can mix them to get something that fill your need. For example using gitmoji convention with the scope notion of conventional commits if you work on a monorepo.
+
+<hr />
+
+Feedback is appreciated 🙏 Please tweet me if you have any questions [@YvonnickFrin](https://twitter.com/YvonnickFrin)!
