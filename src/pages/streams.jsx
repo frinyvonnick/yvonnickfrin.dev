@@ -35,6 +35,8 @@ export default function({ data, ...props }) {
       </Styled.p>
       <Styled.p css={css({ textAlign: 'justify' })}>
         Habituellement je streame le dimanche de 16h à 18h et le mardi de 20h à 22h. N'hésitez pas à suivre <Styled.a href="https://www.twitch.tv/yvonnickfrin">ma chaine Twitch</Styled.a> pour être averti lorsque le stream commence.
+        </br>
+        <strong>Je ne streame pas en ce moment.</strong>
       </Styled.p>
       <div className="streams">
         <h2>Prochains streams</h2>
