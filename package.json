@@ -17,7 +17,7 @@
     "gatsby-source-filesystem": "^2.1.39",
     "gatsby-theme-blog": "^1.0.2",
     "gatsby-transformer-remark": "^2.6.38",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "node-html-to-image": "^1.1.0",
     "react": "^16.9.0",
     "react-add-to-calendar-hoc": "^1.0.9",
