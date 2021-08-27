@@ -1,0 +1,64 @@
+nav ul {
+  padding: 0;
+  list-style: none;
+  font-family: "Libre Caslon Display", serif;
+  font-size: 2.5rem;
+  line-height: 3.5rem;
+}
+
+nav li {
+  margin-right: 1rem;
+}
+
+.menu {
+  display: none;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: hsla(44, 87%, 98%, 1);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+  background: transparent;
+  color: var(--secondary-text-color);
+  border: 0;
+  padding: 0;
+  z-index: 2;
+}
+
+@media screen and (max-width: 980px) {
+  .menu-toggle {
+    padding-top: 1rem;
+    position: initial;
+  }
+
+  .menu-toggle.active {
+    padding-top: 0;
+    left: 2rem;
+  }
+}
+
+.menu-toggle:hover {
+  cursor: pointer;
+}
+
+.menu-toggle.active {
+  position: fixed;
+}
+
+.menu.active {
+  display: flex;
+}
