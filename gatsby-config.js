@@ -1,9 +1,19 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
-    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
+    siteUrl: "https://yvonnickfrin.dev",
+    title: `Yvonnick Frin`,
+    author: `Yvonnick Frin`,
+    description: `Articles, Streams and Talks about JavaScript and its ecosystem.`,
+    social: [
+      {
+        name: `twitter`,
+        url: `https://twitter.com/YvonnickFrin`,
+      },
+      {
+        name: `github`,
+        url: `https://github.com/frinyvonnick`,
+      },
+    ],
   },
   plugins: [
     `gatsby-transformer-remark`,
@@ -38,6 +48,23 @@ module.exports = {
       },
     },
     `gatsby-plugin-gatsby-cloud`,
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-66760805-2",
+        anonymize: true,
+        respectDNT: true,
+      },
+    },
+    "gatsby-plugin-sitemap",
+    {
+      resolve: "gatsby-plugin-robots-txt",
+      options: {
+        host: "https://yvonnickfrin.dev",
+        sitemap: "https://yvonnickfrin.dev/sitemap.xml",
+        policy: [{ userAgent: "*", allow: "/" }],
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
