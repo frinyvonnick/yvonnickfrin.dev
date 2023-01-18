@@ -1,0 +1,84 @@
+---
+title: gitmoji-changelog v2 is out 🎉
+date: 2019-11-07
+tags: 
+  - gitmoji-changelog
+---
+import CodeBlock from '../../src/components/codeblock.js'
+
+[gitmoji-changelog](https://github.com/frinyvonnick/gitmoji-changelog) is a command line tool that generates changelog files for projects following gitmoji convention.
+
+![gitmoji-changelog usage example](https://raw.githubusercontent.com/frinyvonnick/gitmoji-changelog/master/misc/example.gif)
+
+Last week, I published the version 2.0.0 🔖
+
+There was two major goals in this version: 
+
+- Making the cli available for all kinds of projects not only JavaScript ones
+- Add tests to be more confident about merging contributions
+
+## 🏗 Preset system
+
+To enable the cli for more users than the JavaScript ones ❤️ we needed find another way to gather projects metadata like name, version and description than we did in first version. Previously, we get these from the first `package.json` file we found in the upper folder hierarchy. We extracted this logic from our `core` package and imagine a simple system to make the cli more flexible. [Benjamin Petetot](https://github.com/bpetetot) proposed a preset system describe in this [issue](https://github.com/frinyvonnick/gitmoji-changelog/issues/85).
+
+The usage is quite simple you have to call the cli with preset option filled with the preset you want to use:
+
+```sh
+gitmoji-changelog --preset=node
+```
+
+We only wrote the preset for node right now. We need you to help us identify which preset to develop. Please fill this [form](https://yvonnickfrin.typeform.com/to/eC5OLL) so we know the presets you want 🙌
+
+We add [presets](https://github.com/frinyvonnick/gitmoji-changelog/blob/master/DOCUMENTATION.md#presets) section in our documentation. It also contains a tutorial that explains how to write a new [preset](https://github.com/frinyvonnick/gitmoji-changelog/blob/master/DOCUMENTATION.md#add-a-preset). Feel free to open a pull request to add one that doesn't already exist 🙏
+
+## ✅ E2E tests
+
+To make the code base easier to refactored and simplify contributors work, We spend some time adding e2e tests. It was quite hard since we didn't find a simple solution to test a cli that interacts with the filesystem (if you know some library to do it tell us in comment section).
+
+With these tests we are not afraid anymore to broke the cli each time we commit some changes 😂
+
+There are two commands to execute tests now. One for unit tests:
+
+```sh
+yarn test
+```
+
+Another one for e2e tests:
+
+```sh
+yarn test:e2e
+```
+<br />
+
+## ✨ Interactive mode
+
+Special mention to [Franck Abgrall](https://github.com/kefranabg) who added a whole feature. Using the option `-i` let you enter in interactive mode:
+
+```sh
+gitmoji-changelog -i
+```
+
+In this mode you can pick which commits you want to add into your changelog for the current version.
+
+![gitmoji-changelog interactive mode](https://media.giphy.com/media/kyvJpmZBq6kS0qcfQu/giphy.gif)
+
+## 💡 Documentation
+
+Before releasing, we made some effort to improve the [documentation](https://github.com/frinyvonnick/gitmoji-changelog/blob/master/DOCUMENTATION.md). We put it into a separate file to keep our README.md as simple as possible. We did the same thing with the [contributing guide](https://github.com/frinyvonnick/gitmoji-changelog/blob/master/CONTRIBUTING.md). The documentation now describes all available options in the cli. We also clarified how the cli works and the workflow we recommend using.
+
+Don't hesitate to tell us if something isn't clear enough.
+
+## ❤️ Thanks 
+
+We only talked about presets and tests to keep it short but a lot of other things have been done in this version! Find more in our [changelog](https://github.com/frinyvonnick/gitmoji-changelog/blob/master/CHANGELOG.md) 😉
+
+I would like to all contributors that took time to improve `gitmoji-changelog` [Benjamin Petetot](https://github.com/bpetetot), [Franck Abgrall](https://github.com/kefranabg), [quentinncl](https://github.com/quentinncl), [Baptiste Gauduchon](https://github.com/bgauduch), [Florent Berthelot](https://github.com/FBerthelot), [s n](https://github.com/snikic), [Mathieu TUDISCO](https://github.com/mathieutu), [Emmanuel DEMEY](https://github.com/EmmanuelDemey) and [Fabien JUIF](https://github.com/fabienjuif).
+
+I'm really proud you choose this project to make your contributions 👏
+
+<hr />
+
+Feedback is appreciated 🙏 Please tweet me if you have any questions [@YvonnickFrin](https://twitter.com/YvonnickFrin)!
+
+If you encounter any issue using `gitmoji-changelog` tell us on our [repository](https://github.com/frinyvonnick/gitmoji-changelog/issues)!
+

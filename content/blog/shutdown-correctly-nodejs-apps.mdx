@@ -1,0 +1,191 @@
+---
+title: Shutdown correctly Node.js apps
+date: 2020-01-09
+---
+
+It is important to shutdown correctly your apps to handle well processing requests and prevent it to accept new ones. I'll take a web server as example.
+
+```js
+const http = require('http');
+
+const server = http.createServer(function (req, res) {
+  setTimeout(function () {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello World\n');
+  }, 4000);
+}).listen(9090, function (err) {
+  console.log('listening http://localhost:9090/');
+  console.log('pid is ' + process.pid);
+});
+```
+
+<br/>
+
+![Error when killing server](/images/kill-server.gif)
+
+As we see our server doesn't shutdown properly and processing requests don't get right responses. First of all we need to understand how a Node process is terminated in order to fix it.
+
+A process receives a signal when it is about to be killed. They are different kind of [signals](http://man7.org/linux/man-pages/man7/signal.7.html). We will focus on three of them in particular:
+
+- SIGINT: Quit from keyboard (Ctrl + C).
+- SIGQUIT: Quit from keyboard (Ctrl + \). It also produce a [core dump](http://man7.org/linux/man-pages/man5/core.5.html) file.
+- SIGTERM: Quit from operating system (using kill command for example).
+
+Node.js emits events when the process receives signals. You can write a handler for these events. In this one we will close our server so it deals with pending requests and prevent getting new ones.
+
+```js
+// ...
+function handleExit(signal) {
+  console.log(`Received ${signal}. Close my server properly.`)
+  server.close(function () {
+    process.exit(0);
+  });
+}
+
+process.on('SIGINT', handleExit);
+process.on('SIGQUIT', handleExit);
+process.on('SIGTERM', handleExit);
+```
+
+<br/>
+
+![Handle well killing server](/images/kill-server-properly.gif)
+
+Now our server handles well the request then shutdown correctly. You can read more in [Nairi Harutyunyan](https://twitter.com/nairihar)'s [nice article](https://medium.com/hackernoon/graceful-shutdown-in-nodejs-2f8f59d1c357). It explain in details how to shutdown properly a server with a database.
+
+It also exists an node module that handles this logic for you called [death](https://www.npmjs.com/package/death) (made by [JP Richardson](https://github.com/jprichardson)).
+
+```js
+const ON_DEATH = require('death')
+
+ON_DEATH(function(signal, err) {
+  // clean up code here
+})
+```
+
+<br/>
+
+## Sometimes it is not enough
+
+I ran into a situation recently where my server needed to accept new requests in order to shutdown properly. I'll give some explanations. My server subscribed to a webhook. This webhook has a limited quota of subscriptions. So if I don't want to exceed this quota I need to unsubscribe properly when my server shutdown. Here is the unsubscription workflow:
+
+1. Send a request to the webhhook to unsubscribe
+2. The webhook sent a request to the server to confirm unsubscription
+3. The server must respond with a specific token to validate the unsubscription
+
+A Node.js process will close automatically if its event loop is empty. As you can see between 1. and 2. the event loop is empty so the process will be terminated and we won't be able to unsubscribe successfully.
+
+Here is the new server codebase we will use:
+
+```js
+const server = http.createServer(function (req, res) {
+  const params = qs.decode(req.url.split("?")[1]);
+  if (params.mode) {
+    res.writeHead(200);
+    res.write(params.challenge);
+    res.end();
+  } else {
+    let body = "";
+    req.on("data", chunk => {
+      body += chunk;
+    });
+    req.on("end", () => {
+      console.log('event', JSON.parse(body))
+      res.writeHead(200);
+      res.end();
+    });
+  }
+}).listen(9090, function (err) {
+  console.log('listening http://localhost:9090/');
+  console.log('pid is ' + process.pid);
+  fetch('http://localhost:3000/webhook?mode=subscribe&callback=http://localhost:9090')
+});
+```
+
+There are two changes. When the server starts listening on port 9090 we send a first request to subscribe our server to the webhook.
+
+```js
+// ...
+
+fetch('http://localhost:3000/webhook?mode=subscribe&callback=http://localhost:9090')
+
+// ...
+```
+
+We also changed our server's request handler to let him confirm the subscription to the webhook by responding with the token called `challenge`.
+
+```js
+// ...
+
+if (params.mode) {
+  res.writeHead(200);
+  res.write(params.challenge);
+  res.end();
+} else {
+ // ...
+}
+
+// ...
+```
+
+Let's change the `handleExit` function's implementation to send a request to our webhook. We ask the webhook to unsubcribe our server.
+
+```js
+function handleExit(signal) {
+  console.log(`Received ${signal}. Close my server properly.`)
+  fetch('http://localhost:3000/webhook?mode=unsubscribe&callback=http://localhost:9090')
+}
+```
+
+We need to update the code that responds with the challenge to kill our server's process when the webhook confirms the unsubscription.
+
+```js
+// ...
+
+if (params.mode) {
+  res.writeHead(200);
+  res.write(params.challenge);
+  res.end();
+  if (params.mode === 'unsubscribe') {
+    server.close(function () {
+      process.exit(0);
+    });
+  }
+} else {
+  // ...
+}
+
+// ...
+```
+
+When the webhook confirms the unsubscription, we close our server so it stops getting new requests and exits our process properly. This is how the [Twitch API](https://dev.twitch.tv/docs/api/webhooks-guide) webhooks subscription/unsubscription works.
+
+Let's see how our server acts when we try to shut it down. I added some logs to make it more visual.
+
+![Error when killing server with webhook](/images/kill-webhook.gif)
+
+As you can see, it doesn't shutdown properly. The server's process is terminated before we get the webhook request that confirms unsubscription. So the webhook keeps sending events to our server.
+
+To fix this we need to prevent the Node.js process from exiting. We can use the method `process.stdin.resume` that causes the process to pause and override disable default behavior like exiting on `Ctrl+C`.
+
+```js
+const http = require('http');
+
+process.stdin.resume();
+
+// ...
+```
+
+And now?
+
+![Error when killing server with webhook properly](/images/kill-webhook-properly.gif)
+
+Nice, it now waits for the confirmation before exiting the process.
+
+I made a [repository](https://github.com/frinyvonnick/node-shutdown-properly-webhooks) with all the sources presented in this article.
+
+Hope it will help 🙌
+
+<hr />
+
+Feedback is appreciated 🙏 Please tweet me if you have any questions [@YvonnickFrin](https://twitter.com/YvonnickFrin)!

@@ -1,0 +1,21 @@
+---
+title: Open source at Zenika
+date: 2019-07-09
+tags: 
+  - immutadot
+  - conference-hall
+---
+
+A few weeks ago we announced the launch of our brand new [website](https://oss.zenika.com) at [Zenika](https://www.zenika.com/) about our open source culture. It aims to promote our projects and those of our colleagues.
+
+Here is a few of these:
+
+- [immutadot](https://github.com/zenika-open-source/immutadot) is a JavaScript library to deal with nested immutable structures.
+- [bento-starter](https://github.com/kefranabg/bento-starter) is full-stack solution to quickly build PWA applications with Vue.js and Firebase.
+- [Emendare](https://github.com/jimmyleray/Emendare) is a democratic platform to draft amendable texts.
+
+You can find more projects on our [GitHub's organization](https://github.com/zenika-open-source) or on our [website](https://oss.zenika.com).
+
+We also wrote an article on how to [get started in open source](https://oss.zenika.com/white-paper/getting-started). This is a first of six articles on the world of open source.
+
+If you want further news about our projects or future articles don't forget to follow our twitter [@ZenikaOSS](https://twitter.com/ZenikaOSS)!
