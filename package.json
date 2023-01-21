@@ -17,6 +17,7 @@
     "gatsby-plugin-manifest": "^5.4.0",
     "gatsby-plugin-mdx": "^5.4.0",
     "gatsby-plugin-sharp": "^5.4.0",
+    "gatsby-plugin-sitemap": "^6.4.0",
     "gatsby-plugin-slug": "^2.0.0",
     "gatsby-remark-copy-linked-files": "^6.4.0",
     "gatsby-remark-images": "^7.4.0",
