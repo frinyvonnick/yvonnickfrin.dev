@@ -1,155 +1,128 @@
+/**
+ * Implement Gatsby's Node APIs in this file.
+ *
+ * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
+ */
+
 const path = require(`path`)
-const { promisify } = require('util')
-const fs = require(`fs`)
-const fetch = require('node-fetch')
-const { fr } = require('date-fns/locale')
-const nodeHtmlToImage = require('node-html-to-image')
-const { format } = require('date-fns')
+const { createFilePath } = require(`gatsby-source-filesystem`)
 
-const existsAsync = promisify(fs.exists)
-const mkdirAsync = promisify(fs.mkdir)
+// Define the template for blog post
+const blogPost = path.resolve(`./src/templates/blog-post.js`)
 
-async function makeStreams(createPage, graphql) {
-  const streamTemplate = path.resolve(`src/templates/stream-template.js`)
+/**
+ * @type {import('gatsby').GatsbyNode['createPages']}
+ */
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  const { createPage } = actions
+
+  // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
-      allMarkdownRemark(
-        sort: { order: DESC, fields: [frontmatter___date] }
-        limit: 1000
-      ) {
-        edges {
-          node {
-            frontmatter {
-              path
-            }
+      allMdx(sort: { frontmatter: { date: ASC } }, limit: 1000) {
+        nodes {
+          id
+          fields {
+            slug
+          }
+          internal {
+            contentFilePath
           }
         }
       }
     }
   `)
-  // Handle errors
+
   if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`)
+    reporter.panicOnBuild(
+      `There was an error loading your blog posts`,
+      result.errors
+    )
     return
   }
-  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    createPage({
-      path: node.frontmatter.path,
-      component: streamTemplate,
-      context: {}, // additional data can be passed via context
-    })
-  })
-}
 
-async function makeProjectNodes(createNode, createNodeId, createContentDigest) {
-  const res = await fetch('https://europe-west1-blog-256318.cloudfunctions.net/pinned-repositories')
-  const data = await res.json()
-  const pinnedRepositories = data.user.pinnedItems.nodes.map(({ __typename, ...item }) => {
-    return {
-      ...item,
-      stargazers: item.stargazers.totalCount,
-      primaryLanguage: item.primaryLanguage.name,
-    }
-  })
+  const posts = result.data.allMdx.nodes
 
-  pinnedRepositories.forEach(repository => {
-    const nodeContent = JSON.stringify(repository)
+  // Create blog posts pages
+  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
+  // `context` is available in the template as a prop and as a variable in GraphQL
 
-    const nodeMeta = {
-      id: createNodeId(`github-project-${repository.name}`),
-      repository: {
-        path: `/projects/${repository.name}`,
-        ...repository,
-      },
-      internal: {
-        type: `GithubProject`,
-        mediaType: `text/html`,
-        contentDigest: createContentDigest(repository)
-      }
-    }
+  if (posts.length > 0) {
+    posts.forEach((post, index) => {
+      const previousPostId = index === 0 ? null : posts[index - 1].id
+      const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
 
-    const node = Object.assign({}, repository, nodeMeta)
-    createNode(node)
-  })
-}
-
-exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
-  const { createNode } = actions
-  
-  await makeProjectNodes(createNode, createNodeId, createContentDigest)
-}
-
-exports.createPages = async ({ actions, graphql, reporter }) => {
-  const { createPage } = actions
-
-  await makeStreams(createPage, graphql)
-}
-
-exports.onCreatePage = async ({ page, actions }) => {
-  // Made by gatsby theme blog
-  if (page.pluginCreatorId === '1b53d695-4767-5102-9bf5-665af3cc6db8') {
-    if (page.path === '/') {
-      const html = fs.readFileSync(path.join(__dirname, './src/templates/home-card-template.html')).toString('utf8')
-      await nodeHtmlToImage({
-        html,
-        output: `./public/home.jpg`,
-        type: 'jpeg',
+      createPage({
+        path: post.fields.slug,
+        component: `${blogPost}?__contentFilePath=${post.internal.contentFilePath}`,
+        context: {
+          id: post.id,
+          previousPostId,
+          nextPostId,
+        },
       })
-    } else {
-      const html = fs.readFileSync(path.join(__dirname, './src/templates/post-card-template.html')).toString('utf8')
-      await nodeHtmlToImage({
-        html,
-        output: `./public${page.path}.jpg`,
-        type: 'jpeg',
-        content: {
-          title: page.context.title,
-          backgroundColor: page.context.backgroundColor || '#baabda'
-        }
-      })
-    }
-  }
-}
-
-exports.onCreateNode = async ({ node, actions }) => {
-  const { createNode, createNodeField, createPage } = actions
-
-  const alreadyExists = await existsAsync(path.join(__dirname, '/public/streams'))
-  if (!alreadyExists) {
-    await mkdirAsync(path.join(__dirname, '/public/streams'))
-      .catch(() => {
-        // ignore errors
-      })
-  }
-
-  if (node.internal.type === 'MarkdownRemark') {
-    const { frontmatter } = node 
-
-    const [hours, minutes] = frontmatter.startHour.split(':')
-    const content = {
-      title: frontmatter.title,
-      streamer: 'https://avatars.io/twitter/yvonnickfrin',
-      date: format(new Date(frontmatter.date), 'eeee dd MMMM yyyy', { locale: fr }),
-      hour: `${hours}h${minutes}`,
-    }
-
-    if (frontmatter.guest) {
-      content.guest = `https://avatars.io/twitter/${frontmatter.guest}`
-    }
-
-    const html = fs.readFileSync(path.join(__dirname, './src/templates/stream-card-template.html')).toString('utf8')
-    await nodeHtmlToImage({
-      html,
-      output: `./public${frontmatter.path}.jpg`,
-      content,
-      type: 'jpeg',
-      puppeteerArgs: { args: ['--lang=fr-FR,fr'] }
-    })
-  } else if (node.internal.type === 'GithubProject') {
-    const projectTemplate = path.resolve(`src/templates/project-template.js`)
-    createPage({
-      path: node.repository.path,
-      component: projectTemplate,
-      context: {}, // additional data can be passed via context
     })
   }
+}
+
+/**
+ * @type {import('gatsby').GatsbyNode['onCreateNode']}
+ */
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+
+  if (node.internal.type === `MarkdownRemark`) {
+    const value = createFilePath({ node, getNode })
+
+    createNodeField({
+      name: `slug`,
+      node,
+      value,
+    })
+  }
+}
+
+/**
+ * @type {import('gatsby').GatsbyNode['createSchemaCustomization']}
+ */
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+
+  // Explicitly define the siteMetadata {} object
+  // This way those will always be defined even if removed from gatsby-config.js
+
+  // Also explicitly define the Markdown frontmatter
+  // This way the "MarkdownRemark" queries will return `null` even when no
+  // blog posts are stored inside "content/blog" instead of returning an error
+  createTypes(`
+    type SiteSiteMetadata {
+      author: Author
+      siteUrl: String
+      social: Social
+    }
+
+    type Author {
+      name: String
+      summary: String
+    }
+
+    type Social {
+      twitter: String
+    }
+
+    type MarkdownRemark implements Node {
+      frontmatter: Frontmatter
+      fields: Fields
+    }
+
+    type Frontmatter {
+      title: String
+      description: String
+      date: Date @dateformat
+    }
+
+    type Fields {
+      slug: String
+    }
+  `)
 }
