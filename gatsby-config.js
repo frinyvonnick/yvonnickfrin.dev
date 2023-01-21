@@ -140,5 +140,12 @@ module.exports = {
     },
     */
     `gatsby-plugin-sitemap`,
+    {
+      resolve: "gatsby-plugin-robots-txt",
+      options: {
+        sitemap: "https://yvonnickfrin.dev/sitemap-index.xml",
+        policy: [{ userAgent: "*", allow: "/" }],
+      },
+    },
   ],
 }
